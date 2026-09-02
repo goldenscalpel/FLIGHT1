@@ -1,0 +1,1732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FareBoard — Welcome, Harsh | Compare. Book. Fly for less.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=JetBrains+Mono:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080B14; --bg2:#0D1324; --bg3:#0A0F1D;
+  --surface:rgba(255,255,255,0.045); --surface-2:rgba(255,255,255,0.07);
+  --surface-solid:#121A2E; --card:#141C33;
+  --border:rgba(255,255,255,0.09); --border-soft:rgba(255,255,255,0.06);
+  --text:#F1F4FB; --muted:#8C97AE; --muted-2:#697390;
+  --violet:#8B5CF6; --cyan:#22D3EE; --gold:#FBBF24; --gold-2:#F59E0B;
+  --pink:#F472B6; --success:#34D399; --danger:#FB7185;
+  --grad-brand: linear-gradient(135deg,#8B5CF6,#22D3EE);
+  --grad-gold: linear-gradient(135deg,#FDE68A,#FBBF24 55%,#F59E0B);
+  --grad-pink: linear-gradient(135deg,#F472B6,#8B5CF6);
+  --radius:14px; --radius-sm:9px;
+  --shadow: 0 20px 50px rgba(0,0,0,0.45);
+  --shadow-sm: 0 8px 20px rgba(0,0,0,0.3);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; min-height:100vh; color:var(--text); font-family:'Inter',system-ui,sans-serif;
+  background:
+    radial-gradient(900px 500px at 8% -8%, rgba(92, 246, 174, 0.25), transparent 60%),
+    radial-gradient(800px 480px at 96% 8%, rgba(34,211,238,0.16), transparent 55%),
+    radial-gradient(700px 500px at 60% 100%, rgba(114, 244, 207, 0.1), transparent 60%),
+    var(--bg);
+  background-attachment:fixed;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,.display{font-family:'Sora',sans-serif; letter-spacing:-0.01em; margin:0;}
+.mono{font-family:'JetBrains Mono',monospace;}
+a{color:inherit; text-decoration:none;}
+button{font-family:inherit; cursor:pointer;}
+input,select{font-family:inherit;}
+:focus-visible{outline:2px solid var(--cyan); outline-offset:2px;}
+.grad-text{background:var(--grad-brand); -webkit-background-clip:text; background-clip:text; color:transparent;}
+.gold-text{background:var(--grad-gold); -webkit-background-clip:text; background-clip:text; color:transparent;}
+::-webkit-scrollbar{width:9px; height:9px;}
+::-webkit-scrollbar-thumb{background:rgba(6, 152, 94, 0.15); border-radius:10px;}
+
+/* ===== Topbar ===== */
+.topbar{position:sticky; top:0; z-index:60; background:rgba(8,11,20,0.78); backdrop-filter:blur(16px); border-bottom:1px solid var(--border-soft);}
+.topbar-inner{max-width:1320px; margin:0 auto; padding:0 24px; height:68px; display:flex; align-items:center; gap:24px;}
+.brand{display:flex; align-items:center; gap:10px; font-weight:800; font-size:20px; white-space:nowrap;}
+.brand-mark{width:34px; height:34px; border-radius:10px; background:var(--grad-brand); display:flex; align-items:center; justify-content:center; box-shadow:0 6px 16px rgba(139,92,246,0.45); flex-shrink:0;}
+.brand-mark svg{width:19px; height:19px;}
+nav.tabs{display:flex; gap:2px; flex:1; overflow-x:auto; scrollbar-width:none;}
+nav.tabs::-webkit-scrollbar{display:none;}
+.tab-btn{background:transparent; border:none; color:var(--muted); font-size:14px; font-weight:600; padding:0 15px; height:68px; position:relative; white-space:nowrap; transition:color .18s ease;}
+.tab-btn:hover{color:#fff;}
+.tab-btn.active{color:#fff;}
+.tab-btn.active::after{content:""; position:absolute; left:14px; right:14px; bottom:0; height:3px; border-radius:3px 3px 0 0; background:var(--grad-brand); box-shadow:0 0 12px rgba(139,92,246,0.7);}
+.greet-badge{display:flex; align-items:center; gap:8px; background:var(--surface); border:1px solid var(--border); padding:7px 14px 7px 8px; border-radius:30px; flex-shrink:0;}
+.greet-avatar{width:26px; height:26px; border-radius:50%; background:var(--grad-gold); display:flex; align-items:center; justify-content:center; font-family:'Sora',sans-serif; font-weight:800; font-size:12px; color:#3a2703;}
+.greet-badge span{font-size:13px; font-weight:700;}
+.wave{display:inline-block; animation:wave 2.4s ease-in-out infinite; transform-origin:70% 70%;}
+@keyframes wave{0%,60%,100%{transform:rotate(0deg);} 10%{transform:rotate(16deg);} 20%{transform:rotate(-8deg);} 30%{transform:rotate(16deg);} 40%{transform:rotate(-4deg);}}
+
+main{max-width:1320px; margin:0 auto; padding:34px 24px 100px;}
+.view{display:none; animation:fadeUp .4s ease both;}
+.view.active{display:block;}
+@keyframes fadeUp{from{opacity:0; transform:translateY(12px);} to{opacity:1; transform:translateY(0);}}
+
+.page-head{margin-bottom:22px; display:flex; justify-content:space-between; align-items:flex-end; gap:16px; flex-wrap:wrap;}
+.eyebrow{font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:600; color:var(--cyan); text-transform:uppercase; letter-spacing:0.08em; margin:0 0 8px; display:flex; align-items:center; gap:8px;}
+.page-head h2{font-size:28px; margin:0 0 6px;}
+.page-head p{margin:0; color:var(--muted); font-size:14.5px; max-width:600px;}
+
+.panel{background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:24px; box-shadow:var(--shadow-sm); backdrop-filter:blur(10px);}
+.panel-solid{background:var(--surface-solid); border:1px solid var(--border); border-radius:var(--radius); padding:24px;}
+.section-title{font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--muted); margin:0 0 16px; display:flex; align-items:center; justify-content:space-between; gap:10px;}
+.section-title .num{width:22px; height:22px; border-radius:50%; background:var(--grad-brand); color:#fff; font-size:11px; display:inline-flex; align-items:center; justify-content:center; margin-right:8px; font-weight:800;}
+
+/* ===== Buttons ===== */
+.btn{border:none; border-radius:10px; font-weight:700; font-size:14px; padding:12px 20px; display:inline-flex; align-items:center; justify-content:center; gap:8px; position:relative; overflow:hidden; transition:transform .15s ease, box-shadow .15s ease, filter .15s ease;}
+.btn:active{transform:scale(0.97);}
+.btn-primary{background:var(--grad-brand); color:#fff; box-shadow:0 10px 24px rgba(139,92,246,0.4);}
+.btn-primary:hover{filter:brightness(1.1); box-shadow:0 12px 30px rgba(139,92,246,0.55);}
+.btn-gold{background:var(--grad-gold); color:#3a2703; box-shadow:0 10px 24px rgba(251,191,36,0.35);}
+.btn-gold:hover{filter:brightness(1.06); transform:translateY(-1px);}
+.btn-outline{background:transparent; border:1.5px solid var(--border); color:var(--text);}
+.btn-outline:hover{border-color:var(--cyan); color:var(--cyan);}
+.btn-ghost{background:var(--surface-2); color:var(--text); border:1px solid var(--border);}
+.btn-ghost:hover{background:rgba(255,255,255,0.11);}
+.btn-sm{padding:8px 14px; font-size:12.5px;}
+.btn-full{width:100%;}
+.btn[disabled]{opacity:0.45; pointer-events:none;}
+.ripple{position:absolute; border-radius:50%; background:rgba(255,255,255,0.5); transform:scale(0); animation:rip .55s ease-out; pointer-events:none;}
+@keyframes rip{to{transform:scale(3.4); opacity:0;}}
+.spinner{width:15px; height:15px; border-radius:50%; border:2px solid rgba(255,255,255,0.35); border-top-color:#fff; animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.chip{border:1.5px solid var(--border); background:var(--surface); border-radius:20px; padding:7px 14px; font-size:12.5px; font-weight:600; color:var(--muted); transition:all .15s ease;}
+.chip:hover{border-color:var(--cyan); color:var(--cyan);}
+.chip.active{background:var(--grad-brand); border-color:transparent; color:#fff;}
+.badge-pill{background:rgba(36, 251, 111, 0.14); color:var(--gold); border:1px solid rgba(14, 138, 91, 0.35); font-size:10.5px; font-weight:700; padding:3px 9px; border-radius:20px; letter-spacing:0.03em;}
+
+/* ===== HOME / HERO ===== */
+.hero{position:relative; border-radius:22px; padding:50px 44px; overflow:hidden; border:1px solid var(--border); background:linear-gradient(160deg, rgba(139,92,246,0.16), rgba(34,211,238,0.06) 60%, transparent);}
+.hero::before{content:""; position:absolute; inset:0; opacity:0.6; pointer-events:none; background-image:radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px); background-size:24px 24px; mask-image:linear-gradient(to bottom, black, transparent 85%);}
+.typed-wrap{position:relative; display:inline-flex; align-items:center; gap:2px;}
+.typed-cursor{display:inline-block; width:2px; height:14px; background:var(--cyan); margin-left:2px; animation:blink 1s step-end infinite;}
+@keyframes blink{50%{opacity:0;}}
+.hero h1{font-size:40px; line-height:1.14; max-width:640px; margin:14px 0 12px; position:relative;}
+.hero p.sub{color:var(--muted); font-size:15.5px; max-width:520px; margin:0 0 26px; position:relative;}
+.hero-stats{display:flex; gap:28px; flex-wrap:wrap; position:relative;}
+.hero-stat b{display:block; font-family:'JetBrains Mono',monospace; font-size:22px; color:#fff;}
+.hero-stat span{font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em;}
+
+/* Search card */
+.search-card{position:relative; background:var(--surface-solid); border:1px solid var(--border); border-radius:18px; padding:22px; margin-top:28px; box-shadow:var(--shadow);}
+.trip-toggle{display:inline-flex; background:var(--surface); border:1px solid var(--border); border-radius:30px; padding:4px; margin-bottom:18px;}
+.trip-toggle button{border:none; background:transparent; color:var(--muted); font-size:13px; font-weight:700; padding:8px 18px; border-radius:24px; transition:all .18s ease;}
+.trip-toggle button.active{background:var(--grad-brand); color:#fff;}
+.search-grid{display:grid; grid-template-columns:1.35fr 1.35fr 1fr 1fr 1.1fr; gap:12px; align-items:end;}
+.field{position:relative;}
+.field label{display:block; font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--muted); margin-bottom:7px;}
+.field input, .field select{width:100%; border:1.5px solid var(--border); border-radius:10px; padding:12px 13px; font-size:14px; font-family:'JetBrains Mono',monospace; color:var(--text); background:rgba(255,255,255,0.03); transition:border-color .15s ease, box-shadow .15s ease;}
+.field input::placeholder{color:var(--muted-2); font-family:'Inter',sans-serif;}
+.field input:hover, .field select:hover{border-color:rgba(255,255,255,0.25);}
+.field input:focus, .field select:focus{border-color:var(--cyan); box-shadow:0 0 0 3px rgba(34,211,238,0.15); outline:none;}
+.field select option{background:#121A2E; color:#fff;}
+.city-icon{position:absolute; right:12px; top:38px; color:var(--muted-2); pointer-events:none;}
+.dropdown-list{position:absolute; top:calc(100% + 6px); left:0; right:0; background:#151F38; border:1px solid var(--border); border-radius:12px; max-height:260px; overflow-y:auto; z-index:40; box-shadow:var(--shadow); display:none;}
+.dropdown-list.show{display:block; animation:fadeUp .15s ease;}
+.dd-item{padding:10px 13px; display:flex; align-items:center; gap:10px; font-size:13.5px; transition:background .12s ease;}
+.dd-item:hover, .dd-item.hi{background:rgba(139,92,246,0.18);}
+.dd-code{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--muted); background:rgba(255,255,255,0.06); padding:2px 6px; border-radius:5px; margin-left:auto;}
+.swap-btn{position:absolute; left:-22px; bottom:12px; width:34px; height:34px; border-radius:50%; border:1.5px solid var(--border); background:#151F38; color:var(--cyan); display:flex; align-items:center; justify-content:center; z-index:5; transition:transform .35s ease, background .2s ease;}
+.swap-btn:hover{transform:rotate(180deg); background:rgba(34,211,238,0.15);}
+.adv-row{display:flex; gap:18px; flex-wrap:wrap; align-items:center; margin-top:16px; padding-top:16px; border-top:1px dashed var(--border);}
+.check-inline{display:flex; align-items:center; gap:8px; font-size:13px; color:var(--muted); font-weight:600;}
+.check-inline input{accent-color:var(--cyan); width:15px; height:15px;}
+.promo-inline{display:flex; align-items:center; gap:8px; margin-left:auto;}
+.promo-inline input{border:1.5px solid var(--border); border-radius:8px; padding:8px 12px; background:rgba(255,255,255,0.03); color:var(--text); font-size:12.5px; width:150px;}
+
+/* trending */
+.trend-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:14px; margin-top:16px;}
+.trend-card{border-radius:14px; padding:18px; position:relative; overflow:hidden; border:1px solid var(--border); cursor:pointer; transition:transform .18s ease, box-shadow .18s ease; min-height:120px; display:flex; flex-direction:column; justify-content:flex-end;}
+.trend-card:hover{transform:translateY(-4px); box-shadow:var(--shadow);}
+.trend-card b{font-size:16px; position:relative;}
+.trend-card .from{font-size:11px; color:rgba(255,255,255,0.85); position:relative;}
+.trend-card .price{font-family:'JetBrains Mono',monospace; font-weight:700; font-size:17px; margin-top:4px; position:relative;}
+.trend-card::after{content:""; position:absolute; inset:0; background:radial-gradient(120px 90px at 90% 0%, rgba(255,255,255,0.25), transparent);}
+.plane-ic{position:absolute; top:12px; right:12px; opacity:0.35; width:22px; height:22px;}
+
+/* features */
+.feat-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px; margin-top:16px;}
+.feat-card{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:18px; transition:transform .15s ease, border-color .15s ease;}
+.feat-card:hover{transform:translateY(-3px); border-color:rgba(139,92,246,0.5);}
+.feat-ic{width:38px; height:38px; border-radius:10px; background:var(--grad-brand); display:flex; align-items:center; justify-content:center; margin-bottom:12px;}
+.feat-ic svg{width:19px; height:19px; color:#fff;}
+.feat-card b{font-size:14.5px; display:block; margin-bottom:4px;}
+.feat-card p{font-size:12.5px; color:var(--muted); margin:0; line-height:1.5;}
+
+/* platform marquee */
+.marquee{overflow:hidden; position:relative; margin-top:14px; -webkit-mask-image:linear-gradient(90deg,transparent,black 8%,black 92%,transparent); mask-image:linear-gradient(90deg,transparent,black 8%,black 92%,transparent);}
+.marquee-track{display:flex; gap:14px; width:max-content; animation:scroll 26s linear infinite;}
+.marquee:hover .marquee-track{animation-play-state:paused;}
+@keyframes scroll{from{transform:translateX(0);} to{transform:translateX(-50%);}}
+.plat-chip{display:flex; align-items:center; gap:9px; background:var(--surface); border:1px solid var(--border); padding:9px 16px; border-radius:30px; white-space:nowrap;}
+.plat-logo{width:26px; height:26px; border-radius:7px; display:flex; align-items:center; justify-content:center; font-family:'Sora',sans-serif; font-weight:800; font-size:10.5px; color:#fff;}
+
+/* testimonials */
+.testi-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; margin-top:16px;}
+.testi-card{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:18px;}
+.testi-stars{color:var(--gold); font-size:13px; letter-spacing:2px; margin-bottom:8px;}
+.testi-card p{font-size:13px; color:var(--text); line-height:1.6; margin:0 0 14px;}
+.testi-who{display:flex; align-items:center; gap:10px;}
+.testi-avatar{width:32px; height:32px; border-radius:50%; background:var(--grad-pink); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px;}
+.testi-who b{font-size:12.5px; display:block;}
+.testi-who span{font-size:11px; color:var(--muted);}
+
+/* alert cta */
+.alert-cta{display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; background:linear-gradient(120deg, rgba(139,92,246,0.18), rgba(34,211,238,0.08)); border:1px solid var(--border); border-radius:16px; padding:24px 28px; margin-top:26px;}
+.alert-cta h3{font-size:18px; margin-bottom:6px;}
+.alert-cta p{color:var(--muted); font-size:13px; margin:0;}
+.alert-form{display:flex; gap:8px;}
+.alert-form input{border:1.5px solid var(--border); border-radius:10px; padding:11px 14px; background:rgba(255,255,255,0.05); color:var(--text); font-size:13.5px; min-width:220px;}
+
+/* faq */
+.faq-item{border:1px solid var(--border); border-radius:12px; margin-bottom:10px; overflow:hidden; background:var(--surface);}
+.faq-q{display:flex; align-items:center; justify-content:space-between; padding:15px 18px; font-weight:700; font-size:14px; cursor:pointer;}
+.faq-q svg{width:16px; height:16px; transition:transform .2s ease; color:var(--muted);}
+.faq-item.open .faq-q svg{transform:rotate(45deg); color:var(--cyan);}
+.faq-a{max-height:0; overflow:hidden; transition:max-height .25s ease;}
+.faq-item.open .faq-a{max-height:200px;}
+.faq-a p{margin:0; padding:0 18px 16px; color:var(--muted); font-size:13px; line-height:1.6;}
+
+/* ===== COMPARE ===== */
+.compare-layout{display:grid; grid-template-columns:260px 1fr; gap:20px; align-items:start;}
+.filters-sticky{position:sticky; top:86px;}
+.filter-block{margin-bottom:20px;}
+.filter-block .ft{font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--muted); margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;}
+.range-wrap input[type=range]{width:100%; accent-color:var(--cyan);}
+.range-val{font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--cyan); font-weight:700;}
+.cb-row{display:flex; align-items:center; gap:9px; padding:6px 0; font-size:13px; color:var(--text);}
+.cb-row input{accent-color:var(--violet); width:15px; height:15px;}
+.cb-row .cnt{margin-left:auto; font-size:11px; color:var(--muted-2);}
+
+.results-toolbar{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:14px;}
+.sort-select{border:1.5px solid var(--border); background:var(--surface); color:var(--text); border-radius:10px; padding:9px 12px; font-size:13px; margin-left:auto;}
+
+.result-row{position:relative; display:grid; grid-template-columns:1.9fr 1fr 0.9fr 1fr 0.9fr auto; gap:14px; align-items:center; padding:16px 18px; border-radius:14px; margin-bottom:10px; background:var(--surface); border:1px solid var(--border); transition:border-color .15s ease, transform .15s ease;}
+.result-row:hover{border-color:rgba(34,211,238,0.4); transform:translateX(2px);}
+.result-row.best{border-color:var(--gold); background:linear-gradient(90deg, rgba(251,191,36,0.09), var(--surface) 45%);}
+.provider-cell{display:flex; align-items:center; gap:12px;}
+.provider-logo{width:40px; height:40px; border-radius:10px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-family:'Sora',sans-serif; font-weight:800; font-size:12.5px; color:#fff;}
+.provider-name{font-weight:700; font-size:14px;}
+.provider-sub{font-size:11.5px; color:var(--muted);}
+.amenity-row{display:flex; gap:6px; margin-top:6px;}
+.amenity-row svg{width:13px; height:13px; color:var(--muted-2);}
+.route-cell .mono{font-size:13.5px; font-weight:600;}
+.route-cell .sub{font-size:11px; color:var(--muted); margin-top:2px;}
+.stop-tag{font-size:10.5px; padding:3px 8px; border-radius:6px; background:rgba(255,255,255,0.06); color:var(--muted); font-weight:600;}
+.stop-tag.direct{background:rgba(52,211,153,0.14); color:var(--success);}
+.price-cell{text-align:right;}
+.price-cell .amt{font-family:'JetBrains Mono',monospace; font-weight:700; font-size:19px;}
+.price-cell .per{display:block; font-size:10.5px; color:var(--muted); font-weight:400;}
+.tag-row{display:flex; gap:5px; justify-content:flex-end; margin-bottom:4px; flex-wrap:wrap;}
+.tag-mini{font-size:9.5px; font-weight:800; padding:2px 7px; border-radius:20px; letter-spacing:0.03em; text-transform:uppercase;}
+.tag-mini.best{background:var(--grad-gold); color:#3a2703;}
+.tag-mini.fast{background:rgba(34,211,238,0.16); color:var(--cyan);}
+.flap{display:inline-block; animation:flapIn .5s cubic-bezier(.2,.8,.2,1) both;}
+@keyframes flapIn{0%{opacity:0; transform:rotateX(70deg) translateY(-6px);} 60%{opacity:1;} 100%{opacity:1; transform:rotateX(0) translateY(0);}}
+.row-actions{display:flex; gap:8px; flex-direction:column;}
+
+/* insights panel */
+.insight-grid{display:grid; grid-template-columns:1.2fr 1fr; gap:18px; margin-top:22px;}
+.insight-card{background:#0F1626; border-radius:10px; padding:14px 16px; border-left:3px solid var(--cyan);}
+.insight-card b{display:block; font-size:14px; margin-bottom:2px;}
+.insight-card span{font-size:12px; color:var(--muted);}
+.calendar-strip{display:grid; grid-template-columns:repeat(auto-fit,minmax(76px,1fr)); gap:8px; margin-top:14px;}
+.cal-cell{background:#0F1626; border:1px solid var(--border); border-radius:10px; padding:10px 6px; text-align:center; transition:border-color .15s ease;}
+.cal-cell.cheapest{border-color:var(--gold); background:rgba(251,191,36,0.08);}
+.cal-cell .d{font-size:10.5px; color:var(--muted); text-transform:uppercase;}
+.cal-cell .p{font-family:'JetBrains Mono',monospace; font-size:12.5px; font-weight:700; margin-top:4px;}
+
+/* generic mini table */
+.mini-table{width:100%; border-collapse:collapse; font-size:12.5px; margin-top:6px;}
+.mini-table th{text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:0.04em; color:var(--muted); padding:8px 10px; border-bottom:1px solid var(--border);}
+.mini-table td{padding:9px 10px; border-bottom:1px solid var(--border-soft);}
+.mini-table tr:hover td{background:rgba(255,255,255,0.02);}
+.chg-up{color:var(--danger); font-weight:700;}
+.chg-down{color:var(--success); font-weight:700;}
+
+/* line chart */
+.linechart-wrap{position:relative;}
+.linechart-wrap svg{width:100%; height:220px; overflow:visible;}
+.lc-dot{transition:r .12s ease;}
+.lc-dot:hover{r:5.5;}
+.lc-axis-label{font-size:10px; fill:var(--muted);}
+
+/* ===== BOOK ===== */
+.book-grid{display:grid; grid-template-columns:1.7fr 1fr; gap:20px; align-items:start;}
+.summary-card{background:linear-gradient(120deg, rgba(139,92,246,0.22), rgba(34,211,238,0.08)); border:1px solid var(--border); border-radius:16px; padding:24px; margin-bottom:20px;}
+.summary-top{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;}
+.summary-route{font-weight:800; font-size:22px;}
+.summary-meta{display:grid; grid-template-columns:repeat(auto-fit,minmax(100px,1fr)); gap:14px; margin-top:16px;}
+.summary-meta span{display:block; font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em;}
+.summary-meta b{font-size:14px; font-family:'JetBrains Mono',monospace;}
+.amenity-strip{display:flex; gap:14px; margin-top:16px; padding-top:16px; border-top:1px dashed var(--border); flex-wrap:wrap;}
+.amenity-pill{display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--muted);}
+.amenity-pill svg{width:14px; height:14px; color:var(--cyan);}
+
+.pax-card{border:1px solid var(--border); border-radius:12px; padding:16px; margin-bottom:12px; background:var(--surface);}
+.pax-card .ft{font-size:12.5px; font-weight:700; margin-bottom:10px; display:flex; align-items:center; gap:8px;}
+.pax-card .ft .num{width:20px; height:20px; border-radius:50%; background:var(--grad-brand); font-size:10.5px; display:inline-flex; align-items:center; justify-content:center; color:#fff;}
+.form-grid{display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;}
+.form-grid .full{grid-column:1/-1;}
+.field-sm label{display:block; font-size:10px; text-transform:uppercase; letter-spacing:0.04em; color:var(--muted); margin-bottom:6px; font-weight:700;}
+.field-sm input, .field-sm select{width:100%; border:1.5px solid var(--border); border-radius:8px; padding:9px 11px; font-size:13px; background:rgba(255,255,255,0.03); color:var(--text);}
+.field-sm select option{background:#121A2E;}
+
+.class-options{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:6px;}
+.class-opt{border:1.5px solid var(--border); border-radius:10px; padding:12px; cursor:pointer; transition:all .15s ease; background:var(--surface);}
+.class-opt:hover{border-color:var(--cyan);}
+.class-opt.selected{border-color:var(--gold); background:rgba(251,191,36,0.08); box-shadow:0 0 0 3px rgba(251,191,36,0.12);}
+.class-opt b{display:block; font-size:13.5px;}
+.class-opt span{font-size:11px; color:var(--muted);}
+
+.seat-map{display:flex; flex-direction:column; gap:6px; margin-top:8px; align-items:center;}
+.seat-row{display:flex; gap:6px; align-items:center;}
+.seat{width:30px; height:30px; border-radius:7px 7px 3px 3px; background:var(--surface-2); border:1px solid var(--border); font-size:9.5px; display:flex; align-items:center; justify-content:center; color:var(--muted); transition:all .12s ease; cursor:pointer;}
+.seat:hover{border-color:var(--cyan);}
+.seat.occ{background:rgba(251,113,133,0.1); border-color:rgba(251,113,133,0.3); color:var(--danger); cursor:not-allowed;}
+.seat.sel{background:var(--grad-brand); color:#fff; border-color:transparent;}
+.seat.prem{background:rgba(251,191,36,0.1); border-color:rgba(251,191,36,0.35);}
+.seat.prem.sel{background:var(--grad-gold); color:#3a2703;}
+.seat-aisle{width:14px;}
+.seat-legend{display:flex; gap:16px; margin-top:14px; flex-wrap:wrap;}
+.seat-legend div{display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--muted);}
+.legend-box{width:14px; height:14px; border-radius:4px;}
+
+.addon-row{display:flex; align-items:center; justify-content:space-between; padding:13px 0; border-bottom:1px solid var(--border-soft);}
+.addon-row:last-child{border-bottom:none;}
+.switch{position:relative; width:42px; height:23px; border-radius:20px; background:var(--surface-2); transition:background .2s ease; flex-shrink:0; border:1px solid var(--border);}
+.switch::after{content:""; position:absolute; width:17px; height:17px; border-radius:50%; background:#fff; top:2px; left:2px; transition:left .2s ease;}
+.switch.on{background:var(--grad-brand); border-color:transparent;}
+.switch.on::after{left:22px;}
+
+.pay-tabs{display:flex; gap:8px; margin-bottom:14px;}
+.pay-tab{flex:1; text-align:center; padding:11px; border:1.5px solid var(--border); border-radius:10px; font-size:12.5px; font-weight:700; color:var(--muted); cursor:pointer; transition:all .15s ease;}
+.pay-tab.active{border-color:var(--violet); color:#fff; background:rgba(139,92,246,0.12);}
+
+.fare-summary{position:sticky; top:86px;}
+.fare-line{display:flex; justify-content:space-between; font-size:13.5px; padding:8px 0; border-bottom:1px dashed var(--border-soft); color:var(--muted);}
+.fare-line b{color:var(--text); font-weight:600;}
+.fare-line .mono{color:var(--text);}
+.total-row{display:flex; justify-content:space-between; align-items:center; padding-top:16px; margin-top:6px;}
+.total-row .amt{font-family:'JetBrains Mono',monospace; font-size:27px; font-weight:700;}
+.promo-box{display:flex; gap:8px; margin:14px 0;}
+.promo-box input{flex:1; border:1.5px solid var(--border); border-radius:8px; padding:9px 11px; background:rgba(255,255,255,0.03); color:var(--text); font-size:12.5px;}
+
+.empty-note{background:var(--surface); border:1.5px dashed var(--border); border-radius:16px; padding:60px 20px; text-align:center; color:var(--muted);}
+.empty-note svg{width:44px; height:44px; color:var(--muted-2); margin-bottom:12px;}
+
+/* ===== HISTORY ===== */
+.stat-row{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px; margin-bottom:20px;}
+.stat-card{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:18px;}
+.stat-card .ic{width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; margin-bottom:10px;}
+.stat-card .ic svg{width:17px; height:17px; color:#fff;}
+.stat-card b{font-family:'JetBrains Mono',monospace; font-size:22px; display:block;}
+.stat-card span{font-size:11.5px; color:var(--muted);}
+.seg-tabs{display:flex; gap:6px; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:4px;}
+.seg-tabs button{flex:1; border:none; background:transparent; color:var(--muted); font-size:12.5px; font-weight:700; padding:9px; border-radius:9px; transition:all .15s ease;}
+.seg-tabs button.active{background:var(--grad-brand); color:#fff;}
+.history-toolbar{display:flex; gap:12px; align-items:center; margin-bottom:16px; flex-wrap:wrap;}
+.search-box{border:1.5px solid var(--border); border-radius:10px; padding:10px 14px; background:var(--surface); color:var(--text); font-size:13px; min-width:220px; margin-left:auto;}
+table{width:100%; border-collapse:collapse; font-size:13px;}
+th{text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:0.05em; color:var(--muted); padding:11px 12px; border-bottom:1.5px solid var(--border);}
+td{padding:13px 12px; border-bottom:1px solid var(--border-soft); vertical-align:middle;}
+tr.hrow{transition:background .12s ease;}
+tr.hrow:hover{background:rgba(255,255,255,0.025);}
+.status{font-size:10.5px; font-weight:700; padding:4px 10px; border-radius:20px; text-transform:uppercase; letter-spacing:0.03em; white-space:nowrap;}
+.status.confirmed{background:rgba(52,211,153,0.14); color:var(--success);}
+.status.cancelled{background:rgba(251,113,133,0.14); color:var(--danger);}
+.status.completed{background:rgba(139,92,246,0.16); color:#c4b1fb;}
+.mini-air{width:26px; height:26px; border-radius:7px; display:inline-flex; align-items:center; justify-content:center; font-size:10px; font-weight:800; color:#fff; margin-right:8px;}
+
+/* ===== ANALYTICS ===== */
+.range-toggle{display:flex; gap:6px; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:4px;}
+.range-toggle button{border:none; background:transparent; color:var(--muted); font-size:12.5px; font-weight:700; padding:8px 16px; border-radius:7px;}
+.range-toggle button.active{background:var(--grad-brand); color:#fff;}
+.bars{display:flex; align-items:flex-end; gap:14px; height:200px; margin:26px 4px 8px; padding-left:6px;}
+.bar-col{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; position:relative;}
+.bar{width:100%; max-width:46px; border-radius:6px 6px 3px 3px; background:linear-gradient(180deg,var(--cyan),var(--violet)); transition:transform .2s ease, filter .2s ease; position:relative;}
+.bar:hover{filter:brightness(1.15); transform:scaleY(1.02);}
+.bar.cheapest{background:var(--grad-gold);}
+.bar-val{position:absolute; top:-22px; left:50%; transform:translateX(-50%); font-family:'JetBrains Mono',monospace; font-size:10.5px; font-weight:700; white-space:nowrap;}
+.bar-label{font-size:10.5px; color:var(--muted); margin-top:8px; font-family:'JetBrains Mono',monospace;}
+.insight-strip{display:flex; gap:14px; margin-top:22px; flex-wrap:wrap;}
+.insight{flex:1; min-width:170px; background:#0F1626; border-radius:10px; padding:14px 16px; border-left:3px solid var(--violet);}
+.insight b{display:block; font-size:14px; margin-bottom:2px;}
+.insight span{font-size:12px; color:var(--muted);}
+
+/* ===== ROUTES ===== */
+.route-toolbar{display:flex; gap:10px; align-items:center; margin:16px 0; flex-wrap:wrap;}
+.route-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:16px; margin-top:6px;}
+.route-card{background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:18px; transition:transform .15s ease, border-color .15s ease; cursor:pointer;}
+.route-card:hover{transform:translateY(-3px); border-color:rgba(34,211,238,0.4);}
+.route-ic{width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; margin-bottom:10px;}
+.route-ic svg{width:17px; height:17px; color:#fff;}
+.route-card .pair{font-weight:800; font-size:15.5px;}
+.route-card .range{font-family:'JetBrains Mono',monospace; font-size:19px; font-weight:700; margin:8px 0 2px;}
+.route-card .tip{font-size:11.5px; color:var(--muted);}
+.trend{font-size:10.5px; font-weight:700; padding:3px 9px; border-radius:20px; display:inline-flex; align-items:center; gap:3px; margin-top:10px;}
+.trend.up{background:rgba(251,113,133,0.12); color:var(--danger);}
+.trend.down{background:rgba(52,211,153,0.12); color:var(--success);}
+
+/* ===== Modal / toast ===== */
+.overlay{position:fixed; inset:0; background:rgba(4,6,12,0.65); backdrop-filter:blur(4px); display:none; align-items:center; justify-content:center; z-index:100; padding:20px;}
+.overlay.show{display:flex; animation:fadeUp .2s ease;}
+.modal{background:var(--surface-solid); border:1px solid var(--border); border-radius:18px; width:100%; max-width:480px; padding:26px; box-shadow:var(--shadow); max-height:85vh; overflow-y:auto;}
+.modal h3{font-size:18px; margin-bottom:4px;}
+.modal .sub{color:var(--muted); font-size:12.5px; margin-bottom:16px;}
+.rule-row{display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--border-soft); font-size:13px;}
+.rule-row span:last-child{color:var(--text); font-weight:600;}
+.modal-close{position:absolute; top:18px; right:18px; background:var(--surface-2); border:1px solid var(--border); width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--muted);}
+
+.toast{position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(20px); opacity:0; background:var(--surface-solid); border:1px solid var(--border); color:#fff; padding:14px 22px; border-radius:12px; font-size:13.5px; font-weight:600; display:flex; align-items:center; gap:10px; box-shadow:var(--shadow); z-index:200; transition:all .3s ease; pointer-events:none;}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+.toast .dot{width:8px; height:8px; border-radius:50%; background:var(--gold);}
+
+footer{text-align:center; padding:34px 20px; color:var(--muted-2); font-size:12px;}
+
+@media (max-width:960px){
+  .search-grid{grid-template-columns:1fr 1fr;}
+  .compare-layout{grid-template-columns:1fr;}
+  .book-grid{grid-template-columns:1fr;}
+  .insight-grid{grid-template-columns:1fr;}
+  .result-row{grid-template-columns:1fr; text-align:left;}
+  .price-cell{text-align:left;}
+  .form-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-mark"><svg viewBox="0 0 24 24" fill="#fff"><path d="M22 16.5v-2l-8.5-5V4a1.5 1.5 0 0 0-3 0v5.5L2 14.5v2l8.5-2.6V19l-2.5 1.8V22l3.5-1 3.5 1v-1.2L12.5 19v-5.1z"/></svg></div>
+      <span class="grad-text">FareBoard</span>
+    </div>
+    <nav class="tabs" id="tabNav">
+      <button class="tab-btn active" data-view="search">Home</button>
+      <button class="tab-btn" data-view="compare">Compare</button>
+      <button class="tab-btn" data-view="book">Book</button>
+      <button class="tab-btn" data-view="history">History</button>
+      <button class="tab-btn" data-view="analytics">Price Analytics</button>
+      <button class="tab-btn" data-view="routes">Routes &amp; Fares</button>
+    </nav>
+    <div class="greet-badge"><div class="greet-avatar">H</div><span><span class="wave">👋</span> YASH</span></div>
+  </div>
+</div>
+
+<main>
+
+  <!-- ============ HOME ============ -->
+  <section class="view active" id="view-search">
+    <div class="hero">
+      <p class="eyebrow"><span class="typed-wrap"><span id="typedGreet"></span><span class="typed-cursor"></span></span></p>
+      <h1>Fly smarter. <span class="grad-text">Pay less.</span><br>Every fare, one screen.</h1>
+      <p class="sub">FareBoard scans every major booking platform, lines up fares lowest to highest, and lets you book directly — right here, no bouncing between tabs.</p>
+      <div class="hero-stats">
+        <div class="hero-stat"><b id="statProviders">7</b><span>Platforms scanned</span></div>
+        <div class="hero-stat"><b id="statRoutes">26</b><span>Cities covered</span></div>
+        <div class="hero-stat"><b id="statSavings">₹1,850</b><span>Avg. savings found</span></div>
+        <div class="hero-stat"><b id="statUsers">12.4K</b><span>Fares compared today</span></div>
+      </div>
+
+      <div class="search-card">
+        <div class="trip-toggle" id="tripToggle">
+          <button class="active" data-trip="oneway">One-way</button>
+          <button data-trip="round">Round-trip</button>
+          <button data-trip="multi">Multi-city</button>
+        </div>
+        <div class="search-grid">
+          <div class="field">
+            <label>From</label>
+            <input type="text" id="fromCity" autocomplete="off" placeholder="City or airport">
+            <div class="dropdown-list" id="fromList"></div>
+            <button class="swap-btn" id="swapBtn" title="Swap cities">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M7 10l-4 4 4 4M3 14h18M17 14l4-4-4-4M21 10H3"/></svg>
+            </button>
+          </div>
+          <div class="field">
+            <label>To</label>
+            <input type="text" id="toCity" autocomplete="off" placeholder="City or airport">
+            <div class="dropdown-list" id="toList"></div>
+          </div>
+          <div class="field">
+            <label>Departure</label>
+            <input type="date" id="depDate">
+          </div>
+          <div class="field" id="returnField" style="display:none;">
+            <label>Return</label>
+            <input type="date" id="retDate">
+          </div>
+          <div class="field" id="paxField">
+            <label>Travellers &amp; Class</label>
+            <select id="paxCount">
+              <option value="1">1 Adult</option><option value="2">2 Adults</option>
+              <option value="3">3 Adults</option><option value="4">4 Adults</option>
+              <option value="5">5 Adults</option>
+            </select>
+          </div>
+        </div>
+        <div class="adv-row">
+          <label class="check-inline"><input type="checkbox" id="directOnly"> Direct flights only</label>
+          <label class="check-inline"><input type="checkbox" id="flexDates"> Flexible ±3 days</label>
+          <select id="cabinClass" style="border:1.5px solid var(--border); background:rgba(255,255,255,0.03); color:var(--text); border-radius:8px; padding:8px 10px; font-size:12.5px;">
+            <option>Economy</option><option>Premium Economy</option><option>Business</option>
+          </select>
+          <div class="promo-inline">
+            <input type="text" id="promoQuick" placeholder="Promo code">
+          </div>
+          <button class="btn btn-gold" id="searchBtn" style="margin-left:0;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span id="searchBtnLabel">Compare Fares</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:26px;">
+      <div class="section-title">Trending destinations right now</div>
+      <div class="trend-grid" id="trendGrid"></div>
+    </div>
+
+    <div class="panel" style="margin-top:20px;">
+      <div class="section-title">Why travellers choose FareBoard</div>
+      <div class="feat-grid" id="featGrid"></div>
+    </div>
+
+    <div class="panel" style="margin-top:20px;">
+      <div class="section-title">Platforms we track fares from</div>
+      <div class="marquee"><div class="marquee-track" id="marqueeTrack"></div></div>
+    </div>
+
+    <div class="panel" style="margin-top:20px;">
+      <div class="section-title">What travellers are saying</div>
+      <div class="testi-grid" id="testiGrid"></div>
+    </div>
+
+    <div class="alert-cta">
+      <div>
+        <h3>Never miss a fare drop ✈️</h3>
+        <p>Set a price alert for your route and we'll (pretend to) notify you the moment fares dip.</p>
+      </div>
+      <form class="alert-form" id="alertForm">
+        <input type="email" placeholder="you@example.com" required>
+        <button class="btn btn-primary" type="submit">Set Alert</button>
+      </form>
+    </div>
+
+    <div class="panel" style="margin-top:20px;">
+      <div class="section-title">Frequently asked questions</div>
+      <div id="faqList"></div>
+    </div>
+  </section>
+
+  <!-- ============ COMPARE ============ -->
+  <section class="view" id="view-compare">
+    <div class="page-head">
+      <div>
+        <p class="eyebrow" id="compareEyebrow">Fare comparison</p>
+        <h2 id="compareTitle">Search a route to see live fares</h2>
+        <p id="compareSub">Results are sorted lowest fare first across every platform we track.</p>
+      </div>
+    </div>
+
+    <div class="compare-layout">
+      <aside class="panel filters-sticky">
+        <div class="filter-block">
+          <div class="ft">Max price <span class="range-val" id="priceRangeVal">₹15,000</span></div>
+          <div class="range-wrap"><input type="range" id="priceRange" min="1000" max="20000" step="100" value="20000"></div>
+        </div>
+        <div class="filter-block">
+          <div class="ft">Stops</div>
+          <div id="stopFilters"></div>
+        </div>
+        <div class="filter-block">
+          <div class="ft">Airlines</div>
+          <div id="airlineFilters"></div>
+        </div>
+        <div class="filter-block">
+          <div class="ft">Departure time</div>
+          <div id="timeFilters"></div>
+        </div>
+        <div class="filter-block">
+          <div class="ft">Platforms</div>
+          <div id="platformFilters"></div>
+        </div>
+        <button class="btn btn-outline btn-full btn-sm" id="resetFilters">Reset filters</button>
+      </aside>
+
+      <div>
+        <div class="results-toolbar">
+          <span class="chip active" data-filter="all">All flights</span>
+          <span class="chip" data-filter="direct">Direct only</span>
+          <span class="chip" data-filter="morning">Morning</span>
+          <span class="chip" data-filter="evening">Evening</span>
+          <select class="sort-select" id="sortSelect">
+            <option value="price_asc">Price: Low to High</option>
+            <option value="price_desc">Price: High to Low</option>
+            <option value="duration">Duration: Shortest</option>
+            <option value="departure">Departure: Earliest</option>
+          </select>
+        </div>
+        <div id="resultsList"></div>
+
+        <div class="panel" style="margin-top:22px;">
+          <div class="section-title">Lead time &amp; fare insights <span class="badge-pill">for this route</span></div>
+          <div class="insight-grid">
+            <div class="linechart-wrap panel-solid" style="padding:16px;">
+              <div style="font-size:12px; color:var(--muted); margin-bottom:6px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">30-day price trend</div>
+              <div id="compareLineChart"></div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              <div class="insight-card"><b id="ciBest">—</b><span>Best day to book</span></div>
+              <div class="insight-card" style="border-color:var(--success);"><b id="ciSave">—</b><span>Potential savings vs. last-minute</span></div>
+              <div class="insight-card" style="border-color:var(--gold);"><b id="ciVolatile">—</b><span>Price volatility (30 days)</span></div>
+            </div>
+          </div>
+          <div style="font-size:12px; color:var(--muted); margin:22px 0 6px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">Fare calendar — nearby departure dates</div>
+          <div class="calendar-strip" id="calendarStrip"></div>
+          <div style="font-size:12px; color:var(--muted); margin:22px 0 6px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em;">Daily fare log — last 10 days</div>
+          <table class="mini-table" id="compareLogTable"><thead><tr><th>Date</th><th>Avg fare</th><th>Change</th><th>Cheapest platform</th></tr></thead><tbody></tbody></table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BOOK ============ -->
+  <section class="view" id="view-book">
+    <div class="page-head">
+      <div>
+        <p class="eyebrow">Booking · Powered entirely by FareBoard</p>
+        <h2>Complete your booking</h2>
+        <p>Pick a fare from Compare to begin — every booking is completed on FareBoard itself.</p>
+      </div>
+    </div>
+    <div id="bookContent"></div>
+  </section>
+
+  <!-- ============ HISTORY ============ -->
+  <section class="view" id="view-history">
+    <div class="page-head">
+      <div>
+        <p class="eyebrow">Your activity</p>
+        <h2>Booking history</h2>
+        <p>Every booking made through FareBoard, in one ledger.</p>
+      </div>
+    </div>
+    <div class="stat-row" id="historyStats"></div>
+    <div class="panel">
+      <div class="history-toolbar">
+        <div class="seg-tabs" id="historySeg">
+          <button class="active" data-seg="all">All</button>
+          <button data-seg="upcoming">Upcoming</button>
+          <button data-seg="completed">Completed</button>
+          <button data-seg="cancelled">Cancelled</button>
+        </div>
+        <input type="text" class="search-box" id="historySearch" placeholder="Search booking ID or route…">
+      </div>
+      <table>
+        <thead><tr><th>Booking ID</th><th>Route</th><th>Airline</th><th>Class</th><th>Seat</th><th>Departure</th><th>Fare</th><th>Status</th><th></th></tr></thead>
+        <tbody id="historyBody"></tbody>
+      </table>
+      <div id="historyEmpty" style="display:none; padding:50px 0; text-align:center; color:var(--muted);">No bookings match this view yet.</div>
+    </div>
+  </section>
+
+  <!-- ============ ANALYTICS ============ -->
+  <section class="view" id="view-analytics">
+    <div class="page-head">
+      <div>
+        <p class="eyebrow">Pricing intelligence</p>
+        <h2>Price analytics for <span id="analyticsRoute" class="grad-text">DEL → BOM</span></h2>
+        <p>Lead-time behaviour and day-by-day price movement, based on tracked pricing patterns.</p>
+      </div>
+      <div class="range-toggle" id="dayRangeToggle">
+        <button class="active" data-days="15">15 Days</button>
+        <button data-days="30">30 Days</button>
+        <button data-days="60">60 Days</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="section-title">Average fare by days-before-departure</div>
+      <div class="bars" id="leadBars"></div>
+      <div class="insight-strip" id="insightStrip"></div>
+    </div>
+
+    <div class="panel" style="margin-top:20px;">
+      <div class="section-title">Daily price movement <span class="badge-pill" id="dayRangeBadge">15 days</span></div>
+      <div id="dailyLineChart"></div>
+      <table class="mini-table" id="dailyTable"><thead><tr><th>#</th><th>Date</th><th>Price</th><th>Change vs prev day</th><th>Trend</th></tr></thead><tbody></tbody></table>
+    </div>
+  </section>
+
+  <!-- ============ ROUTES ============ -->
+  <section class="view" id="view-routes">
+    <div class="page-head">
+      <div>
+        <p class="eyebrow">Network overview</p>
+        <h2>Popular routes &amp; fare ranges</h2>
+        <p>Typical low-to-high fare band observed per route over the last 30 days.</p>
+      </div>
+    </div>
+    <div class="stat-row" id="routeStats"></div>
+    <div class="panel">
+      <div class="route-toolbar">
+        <input type="text" class="search-box" id="routeSearch" placeholder="Search a city…" style="margin-left:0;">
+        <select class="sort-select" id="routeSort" style="margin-left:0;">
+          <option value="popular">Sort: Popularity</option>
+          <option value="low">Sort: Price low to high</option>
+          <option value="high">Sort: Price high to low</option>
+        </select>
+        <span class="chip active" data-view-mode="card" style="margin-left:auto;">Card view</span>
+        <span class="chip" data-view-mode="table">Table view</span>
+      </div>
+      <div class="route-grid" id="routeGrid"></div>
+      <table id="routeTable" style="display:none; margin-top:6px;">
+        <thead><tr><th>Route</th><th>Low fare</th><th>High fare</th><th>Avg fare</th><th>Trend</th><th></th></tr></thead>
+        <tbody id="routeTableBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<footer>Built for Smart India Hackathon by YASH — FareBoard is a demo prototype. All fares and platform prices shown are simulated for illustration, not live prices. Bookings made here are simulated and no payment is processed.</footer>
+
+<div class="overlay" id="quickViewOverlay">
+  <div class="modal" style="position:relative;">
+    <button class="modal-close" id="closeQuickView">✕</button>
+    <h3 id="qvTitle">Fare details</h3>
+    <p class="sub" id="qvSub"></p>
+    <div id="qvRules"></div>
+    <button class="btn btn-gold btn-full" id="qvSelectBtn" style="margin-top:16px;">Select this fare &amp; continue to book</button>
+  </div>
+</div>
+
+<div class="overlay" id="detailOverlay">
+  <div class="modal" style="position:relative;">
+    <button class="modal-close" id="closeDetail">✕</button>
+    <h3>Booking details</h3>
+    <div id="detailContent" class="sub" style="margin-top:10px;"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span class="dot"></span><span id="toastMsg">Saved</span></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ================= DATA ================= */
+var CITIES = [
+  {c:"Delhi",code:"DEL"},{c:"Mumbai",code:"BOM"},{c:"Bengaluru",code:"BLR"},
+  {c:"Chennai",code:"MAA"},{c:"Kolkata",code:"CCU"},{c:"Hyderabad",code:"HYD"},
+  {c:"Pune",code:"PNQ"},{c:"Goa",code:"GOI"},{c:"Jaipur",code:"JAI"},
+  {c:"Ahmedabad",code:"AMD"},{c:"Kochi",code:"COK"},{c:"Lucknow",code:"LKO"},
+  {c:"Chandigarh",code:"IXC"},{c:"Indore",code:"IDR"},{c:"Bhopal",code:"BHO"},
+  {c:"Nagpur",code:"NAG"},{c:"Patna",code:"PAT"},{c:"Guwahati",code:"GAU"},
+  {c:"Bhubaneswar",code:"BBI"},{c:"Surat",code:"STV"},{c:"Amritsar",code:"ATQ"},
+  {c:"Varanasi",code:"VNS"},{c:"Srinagar",code:"SXR"},{c:"Dehradun",code:"DED"},
+  {c:"Ranchi",code:"IXR"},{c:"Visakhapatnam",code:"VTZ"}
+];
+var PROVIDERS = [
+  {name:"MakeMyTrip", short:"MMT", color:"#E8452C", variance:1.00},
+  {name:"Yatra", short:"YTR", color:"#0B6BB3", variance:0.97},
+  {name:"Cleartrip", short:"CT", color:"#E4574C", variance:1.03},
+  {name:"Goibibo", short:"GO", color:"#E9762B", variance:0.95},
+  {name:"ixigo", short:"IX", color:"#1FA39D", variance:0.93},
+  {name:"EaseMyTrip", short:"EMT", color:"#2E8B57", variance:0.98},
+  {name:"Airline Direct", short:"AIR", color:"#7C5CFC", variance:1.05}
+];
+var AIRLINES = [
+  {name:"IndiGo", color:"#0E4DA4"}, {name:"Air India", color:"#B8102E"},
+  {name:"SpiceJet", color:"#E6472E"}, {name:"Vistara", color:"#5B3A8E"},
+  {name:"Akasa Air", color:"#FF6A13"}
+];
+var FEATURES = [
+  {t:"Lowest fare guarantee", d:"We surface the cheapest total fare across every tracked platform, every time.", ic:"tag"},
+  {t:"Real-time comparison", d:"Fares refresh instantly as you tweak dates, class or passengers.", ic:"bolt"},
+  {t:"Book right here", d:"No bouncing between apps — search, compare and book in one place.", ic:"check"},
+  {t:"Fare alerts", d:"Set an alert and get notified the moment prices on your route drop.", ic:"bell"},
+  {t:"No hidden fees", d:"What you see in the summary is exactly what you pay. No surprise charges.", ic:"shield"},
+  {t:"Flexible cancellation", d:"Free cancellation window on most fares, clearly marked before you book.", ic:"refresh"},
+  {t:"24/7 support", d:"Our support desk is always on for booking changes and questions.", ic:"chat"},
+  {t:"Multi-city support", d:"Plan complex itineraries across multiple stops in a single search.", ic:"map"}
+];
+var ICONS = {
+  tag:'<path d="M20 10l-9-9H4v7l9 9z"/><circle cx="8" cy="8" r="1.5"/>', 
+  bolt:'<path d="M13 2L3 14h7l-1 8 10-12h-7z"/>',
+  check:'<path d="M20 6L9 17l-5-5"/>',
+  bell:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/>',
+  shield:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+  refresh:'<path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.5 9a9 9 0 0 1 14.6-3.4L23 10M1 14l4.9 4.4A9 9 0 0 0 20.5 15"/>',
+  chat:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+  map:'<path d="M9 3v15M15 6v15M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z"/>',
+  plane:'<path d="M22 16.5v-2l-8.5-5V4a1.5 1.5 0 0 0-3 0v5.5L2 14.5v2l8.5-2.6V19l-2.5 1.8V22l3.5-1 3.5 1v-1.2L12.5 19v-5.1z"/>',
+  wifi:'<path d="M5 12.5a11 11 0 0 1 14 0M8.5 16a6 6 0 0 1 7 0"/><circle cx="12" cy="19" r="1"/>',
+  meal:'<path d="M6 2v20M6 2a3 3 0 0 0-3 3v4a3 3 0 0 0 3 3M18 2v20M18 8a3 3 0 0 0 3-3V2"/>',
+  power:'<path d="M12 2v10M18.4 6.6a9 9 0 1 1-12.8 0"/>',
+  luggage:'<rect x="4" y="8" width="16" height="12" rx="2"/><path d="M9 8V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/>',
+  users:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/>',
+  wallet:'<path d="M20 12V8H6a2 2 0 0 1 0-4h12v4"/><path d="M4 6v12a2 2 0 0 0 2 2h14v-4"/><circle cx="18" cy="12" r="1.5"/>',
+  ticket:'<path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4z"/>',
+  x:'<path d="M3 6h18M6 12h12M10 18h4"/>'
+};
+function ic(name, cls){ return '<svg class="'+(cls||'')+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">'+(ICONS[name]||'')+'</svg>'; }
+
+var state = {
+  from:"DEL", to:"BOM", date:null, retDate:null, pax:1, tripType:"oneway", cabin:"Economy",
+  results:[], selectedFlight:null, bookings:[], quickViewFlight:null,
+  filters:{maxPrice:20000, stops:{}, airlines:{}, times:{}, platforms:{}},
+  analyticsDays:15
+};
+
+/* ================= Utilities ================= */
+function hashStr(s){var h=0;for(var i=0;i<s.length;i++){h=(h<<5)-h+s.charCodeAt(i);h|=0;}return Math.abs(h);}
+function seededRand(seedStr){var h=hashStr(seedStr);h^=h<<13;h^=h>>>17;h^=h<<5;return (Math.abs(h)%10000)/10000;}
+function fmtINR(n){return "₹"+Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,",");}
+function daysUntil(dateStr){var d=new Date(dateStr+"T00:00:00");var t=new Date();t.setHours(0,0,0,0);return Math.max(1,Math.round((d-t)/86400000));}
+function addDays(dateStr,n){var d=new Date(dateStr+"T00:00:00");d.setDate(d.getDate()+n);return d;}
+function fmtShortDate(d){return d.toLocaleDateString('en-IN',{day:'2-digit',month:'short'});}
+function fmtDow(d){return d.toLocaleDateString('en-IN',{weekday:'short'});}
+function showToast(msg){var t=document.getElementById('toast');document.getElementById('toastMsg').textContent=msg;t.classList.add('show');clearTimeout(t._timer);t._timer=setTimeout(function(){t.classList.remove('show');},2800);}
+function rippleFx(e,btn){var r=document.createElement('span');r.className='ripple';var rect=btn.getBoundingClientRect();var size=Math.max(rect.width,rect.height);r.style.width=r.style.height=size+'px';r.style.left=(e.clientX-rect.left-size/2)+'px';r.style.top=(e.clientY-rect.top-size/2)+'px';btn.appendChild(r);setTimeout(function(){r.remove();},550);}
+document.addEventListener('click',function(e){var btn=e.target.closest('.btn');if(btn) rippleFx(e,btn);});
+function cityName(code){var c=CITIES.filter(function(x){return x.code===code;})[0];return c?c.c:code;}
+
+/* ================= Typewriter greeting ================= */
+function typeGreeting(){
+  var el = document.getElementById('typedGreet');
+  var full = "Welcome back, YASH";
+  var i = 0;
+  (function tick(){
+    el.textContent = full.slice(0,i);
+    i++;
+    if (i <= full.length) setTimeout(tick, 55);
+  })();
+}
+
+/* ================= Nav ================= */
+function setView(name){
+  document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active');});
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+  var v = document.getElementById('view-'+name);
+  var b = document.querySelector('.tab-btn[data-view="'+name+'"]');
+  if (v) v.classList.add('active');
+  if (b) b.classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+document.getElementById('tabNav').addEventListener('click', function(e){
+  var b = e.target.closest('.tab-btn');
+  if (!b) return;
+  setView(b.dataset.view);
+});
+
+/* ================= Trip type toggle ================= */
+document.getElementById('tripToggle').addEventListener('click', function(e){
+  var b = e.target.closest('button'); if(!b) return;
+  document.querySelectorAll('#tripToggle button').forEach(function(x){x.classList.remove('active');});
+  b.classList.add('active');
+  state.tripType = b.dataset.trip;
+  document.getElementById('returnField').style.display = state.tripType==='round' ? 'block':'none';
+});
+
+/* ================= City dropdowns ================= */
+function renderCityList(listEl, filterText, inputEl){
+  var f = (filterText||'').toLowerCase();
+  var matches = CITIES.filter(function(c){ return c.c.toLowerCase().indexOf(f)>=0 || c.code.toLowerCase().indexOf(f)>=0; });
+  listEl.innerHTML = matches.map(function(c){
+    return '<div class="dd-item" data-code="'+c.code+'" data-name="'+c.c+'">'+ic('plane')+' '+c.c+'<span class="dd-code">'+c.code+'</span></div>';
+  }).join('') || '<div class="dd-item" style="color:var(--muted);">No matches</div>';
+  listEl.querySelectorAll('.dd-item[data-code]').forEach(function(item){
+    item.addEventListener('click', function(){
+      inputEl.value = item.dataset.name + ' (' + item.dataset.code + ')';
+      inputEl.dataset.code = item.dataset.code;
+      listEl.classList.remove('show');
+    });
+  });
+}
+function setupCityField(inputId, listId, defaultCode){
+  var input = document.getElementById(inputId);
+  var list = document.getElementById(listId);
+  var def = CITIES.filter(function(c){return c.code===defaultCode;})[0];
+  input.value = def.c + ' (' + def.code + ')';
+  input.dataset.code = def.code;
+  input.addEventListener('focus', function(){ renderCityList(list, '', input); list.classList.add('show'); });
+  input.addEventListener('input', function(){ renderCityList(list, input.value, input); list.classList.add('show'); });
+  document.addEventListener('click', function(e){ if (!list.contains(e.target) && e.target!==input) list.classList.remove('show'); });
+}
+
+/* ================= Fare generation ================= */
+function baseFareFor(from,to){ var seed=seededRand(from+"-"+to+"-base"); return 2600+Math.round(seed*6200); }
+function leadTimeMultiplier(days){
+  if (days>=60) return 1.05;
+  if (days>=40) return 0.86;
+  if (days>=21) return 0.92;
+  if (days>=14) return 1.05;
+  if (days>=7) return 1.28;
+  if (days>=3) return 1.55;
+  return 1.9;
+}
+function generateResults(from,to,dateStr){
+  var base = baseFareFor(from,to);
+  var days = dateStr ? daysUntil(dateStr) : 30;
+  var ltMul = leadTimeMultiplier(days);
+  var results = [];
+  PROVIDERS.forEach(function(p){
+    AIRLINES.forEach(function(air,ai){
+      var seed = from+to+dateStr+p.name+air.name;
+      var r = seededRand(seed);
+      if (r>0.62) return;
+      var jitter = 0.9 + seededRand(seed+"j")*0.22;
+      var fare = base*ltMul*p.variance*jitter*(1+ai*0.015);
+      var stops = seededRand(seed+"s")>0.68 ? 1 : 0;
+      var depHour = 5 + Math.floor(seededRand(seed+"h")*18);
+      var durMin = 90 + Math.floor(seededRand(seed+"d")*150) + stops*80;
+      results.push({
+        provider:p, airline:air.name, airlineColor:air.color, fare:Math.round(fare/10)*10,
+        stops:stops, depHour:depHour, durMin:durMin,
+        flightNo: air.name.slice(0,2).toUpperCase()+(200+Math.floor(seededRand(seed+"f")*700))
+      });
+    });
+  });
+  results.sort(function(a,b){return a.fare-b.fare;});
+  return results.slice(0,16);
+}
+function fmtTime(hour){var h=hour%24;var ampm=h>=12?'PM':'AM';var h12=h%12;if(h12===0)h12=12;return h12+':00 '+ampm;}
+function fmtDur(min){return Math.floor(min/60)+'h '+(min%60)+'m';}
+
+/* ================= SVG line chart helper ================= */
+function svgLineChart(values, labels, opts){
+  opts = opts||{};
+  var w = opts.width||700, h = opts.height||200, pad = 34;
+  var max = Math.max.apply(null, values), min = Math.min.apply(null, values);
+  var range = (max-min)||1;
+  var stepX = (w - pad*2) / (values.length-1);
+  var pts = values.map(function(v,i){
+    var x = pad + i*stepX;
+    var y = h - pad - ((v-min)/range)*(h-pad*2-20) - 10;
+    return [x,y];
+  });
+  var path = pts.map(function(p,i){ return (i===0?'M':'L')+p[0].toFixed(1)+','+p[1].toFixed(1); }).join(' ');
+  var area = path + ' L'+pts[pts.length-1][0].toFixed(1)+','+(h-pad)+' L'+pts[0][0].toFixed(1)+','+(h-pad)+' Z';
+  var minIdx = values.indexOf(min);
+  var circles = pts.map(function(p,i){
+    var isMin = i===minIdx;
+    return '<circle class="lc-dot" cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="'+(isMin?4.5:3)+'" fill="'+(isMin?'#FBBF24':'#22D3EE')+'" stroke="#0D1324" stroke-width="1.5"><title>'+(labels?labels[i]:i)+': '+fmtINR(values[i])+'</title></circle>';
+  }).join('');
+  var labelEls = '';
+  if (labels){
+    var everyN = Math.ceil(labels.length/8);
+    labels.forEach(function(l,i){
+      if (i%everyN!==0 && i!==labels.length-1) return;
+      labelEls += '<text class="lc-axis-label" x="'+pts[i][0].toFixed(1)+'" y="'+(h-8)+'" text-anchor="middle">'+l+'</text>';
+    });
+  }
+  return '<svg viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none" style="width:100%;height:'+h+'px;">' +
+    '<defs><linearGradient id="lcg'+Math.round(min)+'" x1="0" y1="0" x2="0" y2="1">' +
+    '<stop offset="0%" stop-color="#22D3EE" stop-opacity="0.35"/><stop offset="100%" stop-color="#22D3EE" stop-opacity="0"/></linearGradient></defs>' +
+    '<path d="'+area+'" fill="url(#lcg'+Math.round(min)+')" stroke="none"/>' +
+    '<path d="'+path+'" fill="none" stroke="#8B5CF6" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>' +
+    circles + labelEls +
+  '</svg>';
+}
+
+/* ================= Filters setup ================= */
+function buildFilterCheckboxes(containerId, items, filterKey){
+  var el = document.getElementById(containerId);
+  el.innerHTML = items.map(function(it){
+    state.filters[filterKey][it.key] = true;
+    return '<label class="cb-row"><input type="checkbox" checked data-key="'+it.key+'"> '+it.label+' <span class="cnt">'+it.count+'</span></label>';
+  }).join('');
+  el.querySelectorAll('input').forEach(function(cb){
+    cb.addEventListener('change', function(){
+      state.filters[filterKey][cb.dataset.key] = cb.checked;
+      renderResults();
+    });
+  });
+}
+function setupFiltersForResults(){
+  var stopsCount = {0:0,1:0};
+  var airlineCount = {};
+  var timeCount = {morning:0, afternoon:0, evening:0, night:0};
+  var platformCount = {};
+  state.results.forEach(function(r){
+    stopsCount[r.stops] = (stopsCount[r.stops]||0)+1;
+    airlineCount[r.airline] = (airlineCount[r.airline]||0)+1;
+    platformCount[r.provider.name] = (platformCount[r.provider.name]||0)+1;
+    var slot = r.depHour<12?'morning':r.depHour<17?'afternoon':r.depHour<21?'evening':'night';
+    timeCount[slot]++;
+  });
+  state.filters.stops = {}; state.filters.airlines = {}; state.filters.times = {}; state.filters.platforms = {};
+  buildFilterCheckboxes('stopFilters', [
+    {key:'0', label:'Direct', count:stopsCount[0]||0},
+    {key:'1', label:'1 Stop', count:stopsCount[1]||0}
+  ], 'stops');
+  buildFilterCheckboxes('airlineFilters', AIRLINES.map(function(a){return {key:a.name, label:a.name, count:airlineCount[a.name]||0};}), 'airlines');
+  buildFilterCheckboxes('timeFilters', [
+    {key:'morning', label:'Morning (5-12)', count:timeCount.morning},
+    {key:'afternoon', label:'Afternoon (12-17)', count:timeCount.afternoon},
+    {key:'evening', label:'Evening (17-21)', count:timeCount.evening},
+    {key:'night', label:'Night (21-5)', count:timeCount.night}
+  ], 'times');
+  buildFilterCheckboxes('platformFilters', PROVIDERS.map(function(p){return {key:p.name, label:p.name, count:platformCount[p.name]||0};}), 'platforms');
+
+  var maxFare = Math.max.apply(null, state.results.map(function(r){return r.fare;})) || 20000;
+  var priceRange = document.getElementById('priceRange');
+  priceRange.max = maxFare; priceRange.value = maxFare; state.filters.maxPrice = maxFare;
+  document.getElementById('priceRangeVal').textContent = fmtINR(maxFare);
+}
+document.getElementById('priceRange').addEventListener('input', function(){
+  state.filters.maxPrice = +this.value;
+  document.getElementById('priceRangeVal').textContent = fmtINR(this.value);
+  renderResults();
+});
+document.getElementById('resetFilters').addEventListener('click', function(){ setupFiltersForResults(); renderResults(); });
+
+var currentChip = 'all';
+var currentSort = 'price_asc';
+document.querySelectorAll('.results-toolbar .chip').forEach(function(chip){
+  chip.addEventListener('click', function(){
+    document.querySelectorAll('.results-toolbar .chip').forEach(function(c){c.classList.remove('active');});
+    chip.classList.add('active');
+    currentChip = chip.dataset.filter;
+    renderResults();
+  });
+});
+document.getElementById('sortSelect').addEventListener('change', function(){ currentSort = this.value; renderResults(); });
+
+/* ================= Render results ================= */
+function renderResults(){
+  var list = document.getElementById('resultsList');
+  var filtered = state.results.filter(function(r){
+    if (r.fare > state.filters.maxPrice) return false;
+    if (state.filters.stops[String(r.stops)] === false) return false;
+    if (state.filters.airlines[r.airline] === false) return false;
+    if (state.filters.platforms[r.provider.name] === false) return false;
+    var slot = r.depHour<12?'morning':r.depHour<17?'afternoon':r.depHour<21?'evening':'night';
+    if (state.filters.times[slot] === false) return false;
+    if (currentChip==='direct' && r.stops!==0) return false;
+    if (currentChip==='morning' && r.depHour>=12) return false;
+    if (currentChip==='evening' && r.depHour<17) return false;
+    return true;
+  });
+  filtered.sort(function(a,b){
+    if (currentSort==='price_asc') return a.fare-b.fare;
+    if (currentSort==='price_desc') return b.fare-a.fare;
+    if (currentSort==='duration') return a.durMin-b.durMin;
+    if (currentSort==='departure') return a.depHour-b.depHour;
+    return 0;
+  });
+  list.innerHTML = '';
+  if (!filtered.length){
+    list.innerHTML = '<div class="empty-note">'+ic('x')+'<br>No flights match these filters — try widening your price range or clearing a filter.</div>';
+    list._filtered = [];
+    return;
+  }
+  var minFare = Math.min.apply(null, filtered.map(function(r){return r.fare;}));
+  var minDur = Math.min.apply(null, filtered.map(function(r){return r.durMin;}));
+  filtered.forEach(function(r,idx){
+    var row = document.createElement('div');
+    row.className = 'result-row' + (r.fare===minFare?' best':'');
+    var tags = '';
+    if (r.fare===minFare) tags += '<span class="tag-mini best">Cheapest</span>';
+    if (r.durMin===minDur) tags += '<span class="tag-mini fast">Fastest</span>';
+    row.innerHTML =
+      '<div class="provider-cell">' +
+        '<div class="provider-logo" style="background:'+r.provider.color+';">'+r.provider.short+'</div>' +
+        '<div><div class="provider-name">'+r.provider.name+'</div><div class="provider-sub">'+r.airline+' · '+r.flightNo+'</div>' +
+        '<div class="amenity-row">'+ic('wifi')+ic('meal')+ic('power')+ic('luggage')+'</div></div>' +
+      '</div>' +
+      '<div class="route-cell"><div class="mono">'+fmtTime(r.depHour)+' → '+fmtTime(r.depHour+Math.round(r.durMin/60))+'</div><div class="sub">'+fmtDur(r.durMin)+'</div></div>' +
+      '<div>'+(r.stops===0?'<span class="stop-tag direct">Direct</span>':'<span class="stop-tag">'+r.stops+' stop</span>')+'</div>' +
+      '<div class="route-cell"><div class="mono">'+state.from+' → '+state.to+'</div><div class="sub">'+(state.date||'Flexible date')+'</div></div>' +
+      '<div class="price-cell"><div class="tag-row">'+tags+'</div><span class="amt flap">'+fmtINR(r.fare)+'</span><span class="per">per traveller</span></div>' +
+      '<div class="row-actions">' +
+        '<button class="btn btn-primary btn-sm" data-action="book" data-idx="'+idx+'">Book now</button>' +
+        '<button class="btn btn-ghost btn-sm" data-action="view" data-idx="'+idx+'">Fare details</button>' +
+      '</div>';
+    list.appendChild(row);
+  });
+  list._filtered = filtered;
+  list.querySelectorAll('[data-action="book"]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      state.selectedFlight = list._filtered[+btn.dataset.idx];
+      renderBookView(); setView('book');
+    });
+  });
+  list.querySelectorAll('[data-action="view"]').forEach(function(btn){
+    btn.addEventListener('click', function(){ openQuickView(list._filtered[+btn.dataset.idx]); });
+  });
+}
+
+/* Quick view modal — internal only, no external redirects */
+function openQuickView(r){
+  state.quickViewFlight = r;
+  document.getElementById('qvTitle').textContent = r.airline+' '+r.flightNo+' — '+state.from+' → '+state.to;
+  document.getElementById('qvSub').textContent = 'Fare matched from '+r.provider.name+' listing, booked directly through FareBoard.';
+  var cabinBag = r.stops===0 ? '15kg check-in + 7kg cabin' : '20kg check-in + 7kg cabin';
+  document.getElementById('qvRules').innerHTML =
+    '<div class="rule-row"><span>Base fare</span><span>'+fmtINR(r.fare)+'</span></div>' +
+    '<div class="rule-row"><span>Baggage allowance</span><span>'+cabinBag+'</span></div>' +
+    '<div class="rule-row"><span>Cancellation</span><span>Free up to 24h before</span></div>' +
+    '<div class="rule-row"><span>Date change fee</span><span>₹750 + fare difference</span></div>' +
+    '<div class="rule-row"><span>Seat selection</span><span>Included at booking</span></div>' +
+    '<div class="rule-row"><span>Refund on cancellation</span><span>85% of base fare</span></div>';
+  document.getElementById('quickViewOverlay').classList.add('show');
+}
+document.getElementById('closeQuickView').addEventListener('click', function(){ document.getElementById('quickViewOverlay').classList.remove('show'); });
+document.getElementById('qvSelectBtn').addEventListener('click', function(){
+  state.selectedFlight = state.quickViewFlight;
+  document.getElementById('quickViewOverlay').classList.remove('show');
+  renderBookView(); setView('book');
+});
+document.getElementById('closeDetail').addEventListener('click', function(){ document.getElementById('detailOverlay').classList.remove('show'); });
+
+/* ================= Compare page insights ================= */
+function generateDailyHistory(from,to,days){
+  var base = baseFareFor(from,to);
+  var arr = []; var price = base*0.95;
+  for (var i=days-1;i>=0;i--){
+    var seed = from+to+"daily"+i;
+    var delta = (seededRand(seed)-0.5)*0.07*base;
+    price = Math.min(base*1.35, Math.max(base*0.72, price+delta));
+    var d = new Date(); d.setDate(d.getDate()-i);
+    arr.push({date:d, price:Math.round(price/10)*10});
+  }
+  return arr;
+}
+function renderCompareInsights(){
+  var hist = generateDailyHistory(state.from, state.to, 30);
+  var values = hist.map(function(h){return h.price;});
+  var labels = hist.map(function(h){return fmtShortDate(h.date);});
+  document.getElementById('compareLineChart').innerHTML = svgLineChart(values, labels, {height:190});
+
+  var min = Math.min.apply(null,values), max = Math.max.apply(null,values);
+  var last = values[values.length-1];
+  var minIdx = values.indexOf(min);
+  document.getElementById('ciBest').textContent = labels[minIdx] + ' (' + fmtINR(min) + ')';
+  document.getElementById('ciSave').textContent = fmtINR(Math.max(0,last-min)) + ' saved by booking early';
+  document.getElementById('ciVolatile').textContent = Math.round(((max-min)/min)*100) + '% swing over 30 days';
+
+  // fare calendar: date +/- 5 days around selected date
+  var baseDate = state.date || new Date().toISOString().slice(0,10);
+  var cal = document.getElementById('calendarStrip');
+  cal.innerHTML = '';
+  var base = baseFareFor(state.from,state.to);
+  var prices = [];
+  for (var off=-5;off<=5;off++){
+    var d = addDays(baseDate, off);
+    if (d < new Date(new Date().toDateString())) continue;
+    var du = Math.max(1, Math.round((d-new Date(new Date().toDateString()))/86400000));
+    var price = Math.round(base*leadTimeMultiplier(du)/10)*10;
+    prices.push({d:d, price:price});
+  }
+  var calMin = Math.min.apply(null, prices.map(function(p){return p.price;}));
+  prices.forEach(function(p){
+    var cell = document.createElement('div');
+    cell.className = 'cal-cell' + (p.price===calMin?' cheapest':'');
+    cell.innerHTML = '<div class="d">'+fmtDow(p.d)+' '+fmtShortDate(p.d)+'</div><div class="p">'+fmtINR(p.price)+'</div>';
+    cell.addEventListener('click', function(){
+      document.getElementById('depDate').value = p.d.toISOString().slice(0,10);
+      runSearch();
+    });
+    cal.appendChild(cell);
+  });
+
+  // daily fare log table — last 10 days
+  var logBody = document.querySelector('#compareLogTable tbody');
+  logBody.innerHTML = '';
+  var last10 = hist.slice(-10).reverse();
+  last10.forEach(function(h,i){
+    var prev = hist[hist.length-10+ (9-i) -1];
+    var change = prev ? h.price-prev.price : 0;
+    var cheapestProvider = PROVIDERS[Math.floor(seededRand(state.from+state.to+h.date.toDateString())*PROVIDERS.length)];
+    logBody.innerHTML +=
+      '<tr><td>'+fmtDow(h.date)+' '+fmtShortDate(h.date)+'</td><td class="mono">'+fmtINR(h.price)+'</td>' +
+      '<td class="'+(change>=0?'chg-up':'chg-down')+'">'+(change>=0?'▲ +':'▼ ')+fmtINR(Math.abs(change))+'</td>' +
+      '<td>'+cheapestProvider.name+'</td></tr>';
+  });
+}
+
+/* ================= Search action ================= */
+function runSearch(){
+  var fromInput = document.getElementById('fromCity');
+  var toInput = document.getElementById('toCity');
+  var from = fromInput.dataset.code || 'DEL';
+  var to = toInput.dataset.code || 'BOM';
+  var date = document.getElementById('depDate').value;
+  var pax = document.getElementById('paxCount').value;
+  var cabin = document.getElementById('cabinClass').value;
+  if (from===to){ showToast("Origin and destination can't be the same"); return; }
+
+  var btn = document.getElementById('searchBtn');
+  var label = document.getElementById('searchBtnLabel');
+  btn.disabled = true;
+  label.innerHTML = '<span class="spinner"></span> Searching…';
+  setTimeout(function(){
+    state.from=from; state.to=to; state.date=date; state.pax=pax; state.cabin=cabin;
+    state.results = generateResults(from,to,date);
+    document.getElementById('compareEyebrow').textContent = (date? daysUntil(date)+' days to departure':'Flexible dates') + ' · ' + pax + ' traveller' + (pax>1?'s':'') + ' · ' + cabin;
+    document.getElementById('compareTitle').textContent = cityName(from)+' ('+from+') → '+cityName(to)+' ('+to+')';
+    document.getElementById('compareSub').textContent = state.results.length+' fares found across '+PROVIDERS.length+' platforms, sorted lowest to highest.';
+    setupFiltersForResults();
+    renderResults();
+    renderCompareInsights();
+    renderAnalytics();
+    btn.disabled = false;
+    label.textContent = 'Compare Fares';
+    setView('compare');
+  }, 700);
+}
+document.getElementById('searchBtn').addEventListener('click', runSearch);
+document.getElementById('swapBtn').addEventListener('click', function(){
+  var f=document.getElementById('fromCity'), t=document.getElementById('toCity');
+  var fv=f.value, fc=f.dataset.code, tv=t.value, tc=t.dataset.code;
+  f.value=tv; f.dataset.code=tc; t.value=fv; t.dataset.code=fc;
+});
+document.getElementById('alertForm').addEventListener('submit', function(e){
+  e.preventDefault(); showToast('Price alert set for '+state.from+' → '+state.to+' ✓'); this.reset();
+});
+
+/* ================= Trending / features / platforms / testimonials / faq ================= */
+function renderTrending(){
+  var picks = ["GOI","BLR","COK","JAI","CCU","SXR","AMD","VNS"];
+  var colors = ["linear-gradient(135deg,#8B5CF6,#22D3EE)","linear-gradient(135deg,#F472B6,#8B5CF6)","linear-gradient(135deg,#22D3EE,#34D399)","linear-gradient(135deg,#FBBF24,#F472B6)"];
+  var grid = document.getElementById('trendGrid');
+  grid.innerHTML = '';
+  picks.forEach(function(code,i){
+    var base = baseFareFor('DEL',code);
+    var card = document.createElement('div');
+    card.className = 'trend-card';
+    card.style.background = colors[i%colors.length];
+    card.innerHTML = ic('plane','plane-ic') + '<div class="from">from Delhi</div><b>'+cityName(code)+'</b><div class="price">'+fmtINR(base*0.86)+'</div>';
+    card.addEventListener('click', function(){
+      document.getElementById('toCity').value = cityName(code)+' ('+code+')';
+      document.getElementById('toCity').dataset.code = code;
+      runSearch();
+    });
+    grid.appendChild(card);
+  });
+}
+function renderFeatures(){
+  document.getElementById('featGrid').innerHTML = FEATURES.map(function(f){
+    return '<div class="feat-card"><div class="feat-ic">'+ic(f.ic)+'</div><b>'+f.t+'</b><p>'+f.d+'</p></div>';
+  }).join('');
+}
+function renderMarquee(){
+  var chips = PROVIDERS.concat(PROVIDERS).map(function(p){
+    return '<div class="plat-chip"><div class="plat-logo" style="background:'+p.color+';">'+p.short+'</div>'+p.name+'</div>';
+  }).join('');
+  document.getElementById('marqueeTrack').innerHTML = chips;
+}
+function renderTestimonials(){
+  var reviews = [
+    {n:"Ananya R.", role:"Frequent flyer, Bengaluru", t:"Saved ₹2,300 on my Delhi trip just by seeing every platform's price side by side.", i:"A"},
+    {n:"Rohit M.", role:"Student, Pune", t:"Booking straight on FareBoard without hopping between five tabs is such a relief.", i:"R"},
+    {n:"Fatima S.", role:"Consultant, Hyderabad", t:"The lead-time chart told me exactly when to book — fare dropped like it predicted.", i:"F"}
+  ];
+  document.getElementById('testiGrid').innerHTML = reviews.map(function(r){
+    return '<div class="testi-card"><div class="testi-stars">★★★★★</div><p>"'+r.t+'"</p><div class="testi-who"><div class="testi-avatar">'+r.i+'</div><div><b>'+r.n+'</b><span>'+r.role+'</span></div></div></div>';
+  }).join('');
+}
+function renderFaq(){
+  var faqs = [
+    {q:"Is FareBoard free to use?", a:"Yes — comparing and booking fares on FareBoard is completely free for travellers."},
+    {q:"Do prices update in real time?", a:"In this prototype, fares are generated from a consistent demo model per route and date, simulating live comparison."},
+    {q:"Can I cancel a booking?", a:"Yes, cancel anytime from the History tab — most fares carry a free cancellation window shown at booking."},
+    {q:"Which cities are supported?", a:"26 major Indian cities are supported today, with more being added as the network grows."}
+  ];
+  document.getElementById('faqList').innerHTML = faqs.map(function(f,i){
+    return '<div class="faq-item" id="faq'+i+'"><div class="faq-q">'+f.q+ic('x')+'</div><div class="faq-a"><p>'+f.a+'</p></div></div>';
+  }).join('');
+  faqs.forEach(function(_,i){
+    document.getElementById('faq'+i).querySelector('.faq-q').addEventListener('click', function(){
+      document.getElementById('faq'+i).classList.toggle('open');
+    });
+  });
+}
+
+/* ================= Booking view ================= */
+var bookState = {cls:'Economy', baggage:false, meal:false, insurance:false, refundable:false, seats:[], payTab:'card', promo:''};
+var CLASS_MULT = {Economy:1, Premium:1.55, Business:2.4};
+var SEAT_ROWS = 9, SEAT_COLS = ['A','B','C','D','E','F'];
+
+function buildSeatMap(flightSeed){
+  var occupied = {};
+  for (var r=1;r<=SEAT_ROWS;r++){
+    SEAT_COLS.forEach(function(c){
+      if (seededRand(flightSeed+r+c) > 0.78) occupied[r+c] = true;
+    });
+  }
+  var html = '<div class="seat-map">';
+  for (var row=1; row<=SEAT_ROWS; row++){
+    html += '<div class="seat-row">';
+    SEAT_COLS.forEach(function(col,ci){
+      var id = row+col;
+      var premium = row<=2;
+      var cls = 'seat' + (occupied[id]?' occ':'') + (premium?' prem':'');
+      html += '<div class="'+cls+'" data-seat="'+id+'" data-premium="'+premium+'">'+id+'</div>';
+      if (ci===2) html += '<div class="seat-aisle"></div>';
+    });
+    html += '</div>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function renderBookView(){
+  var wrap = document.getElementById('bookContent');
+  var r = state.selectedFlight;
+  if (!r){
+    wrap.innerHTML = '<div class="empty-note">'+ic('ticket')+'<br>No flight selected yet — pick one from <b>Compare</b> to start booking.<br><br><button class="btn btn-primary" id="goCompareBtn">Go to Compare</button></div>';
+    document.getElementById('goCompareBtn').addEventListener('click', function(){ setView('compare'); });
+    return;
+  }
+  bookState = {cls:'Economy', baggage:false, meal:false, insurance:false, refundable:false, seats:[], payTab:'card', promo:''};
+  var paxN = +state.pax;
+  var flightSeed = state.from+state.to+r.flightNo+r.provider.name;
+
+  var paxForms = '';
+  for (var i=1;i<=paxN;i++){
+    paxForms += '<div class="pax-card"><div class="ft"><span class="num">'+i+'</span> Passenger '+i+'</div>' +
+      '<div class="form-grid">' +
+        '<div class="field-sm"><label>Title</label><select><option>Mr</option><option>Ms</option><option>Mrs</option></select></div>' +
+        '<div class="field-sm full" style="grid-column:span 2;"><label>Full name</label><input type="text" placeholder="As per government ID"></div>' +
+        '<div class="field-sm"><label>Age</label><input type="number" min="1" max="110" placeholder="Age"></div>' +
+        '<div class="field-sm"><label>Gender</label><select><option>Male</option><option>Female</option><option>Other</option></select></div>' +
+        '<div class="field-sm"><label>Meal preference</label><select><option>Veg</option><option>Non-veg</option><option>Jain</option><option>No meal</option></select></div>' +
+      '</div></div>';
+  }
+
+  wrap.innerHTML =
+    '<div class="summary-card">' +
+      '<div class="summary-top"><div class="summary-route">'+state.from+' → '+state.to+'</div>' +
+        '<div class="badge-pill">'+r.provider.name+' fare match</div></div>' +
+      '<div class="summary-meta">' +
+        '<div><span>Airline</span><b>'+r.airline+' · '+r.flightNo+'</b></div>' +
+        '<div><span>Departs</span><b>'+fmtTime(r.depHour)+'</b></div>' +
+        '<div><span>Duration</span><b>'+fmtDur(r.durMin)+'</b></div>' +
+        '<div><span>Stops</span><b>'+(r.stops===0?'Direct':r.stops+' stop')+'</b></div>' +
+        '<div><span>Date</span><b>'+(state.date||'Flexible')+'</b></div>' +
+        '<div><span>Cabin</span><b>'+state.cabin+'</b></div>' +
+      '</div>' +
+      '<div class="amenity-strip">' +
+        '<div class="amenity-pill">'+ic('wifi')+' Wi-Fi onboard</div>' +
+        '<div class="amenity-pill">'+ic('meal')+' Meal included</div>' +
+        '<div class="amenity-pill">'+ic('power')+' Power outlets</div>' +
+        '<div class="amenity-pill">'+ic('luggage')+' 15kg baggage</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="book-grid">' +
+      '<div>' +
+        '<div class="panel-solid" style="margin-bottom:16px;"><div class="section-title"><span><span class="num" style="display:inline-flex;width:20px;height:20px;border-radius:50%;background:var(--grad-brand);align-items:center;justify-content:center;font-size:10.5px;margin-right:8px;">1</span>Passenger details</span></div>' + paxForms + '</div>' +
+        '<div class="panel-solid" style="margin-bottom:16px;"><div class="section-title"><span class="num" style="display:inline-flex;width:20px;height:20px;border-radius:50%;background:var(--grad-brand);align-items:center;justify-content:center;font-size:10.5px;margin-right:8px;">2</span>Travel class</div>' +
+          '<div class="class-options" id="classOptions">' +
+            '<div class="class-opt" data-cls="Economy"><b>Economy</b><span>1x fare</span></div>' +
+            '<div class="class-opt" data-cls="Premium"><b>Premium</b><span>1.55x fare</span></div>' +
+            '<div class="class-opt" data-cls="Business"><b>Business</b><span>2.4x fare</span></div>' +
+          '</div></div>' +
+        '<div class="panel-solid" style="margin-bottom:16px;"><div class="section-title"><span class="num" style="display:inline-flex;width:20px;height:20px;border-radius:50%;background:var(--grad-brand);align-items:center;justify-content:center;font-size:10.5px;margin-right:8px;">3</span>Choose seats (select '+paxN+')</div>' +
+          buildSeatMap(flightSeed) +
+          '<div class="seat-legend">' +
+            '<div><span class="legend-box" style="background:var(--surface-2);border:1px solid var(--border);"></span>Available</div>' +
+            '<div><span class="legend-box" style="background:rgba(251,191,36,0.15);border:1px solid rgba(251,191,36,0.4);"></span>Premium (+₹300)</div>' +
+            '<div><span class="legend-box" style="background:var(--grad-brand);"></span>Selected</div>' +
+            '<div><span class="legend-box" style="background:rgba(251,113,133,0.15);border:1px solid rgba(251,113,133,0.4);"></span>Occupied</div>' +
+          '</div></div>' +
+        '<div class="panel-solid" style="margin-bottom:16px;"><div class="section-title"><span class="num" style="display:inline-flex;width:20px;height:20px;border-radius:50%;background:var(--grad-brand);align-items:center;justify-content:center;font-size:10.5px;margin-right:8px;">4</span>Add-ons &amp; protection</div>' +
+          '<div class="addon-row"><div><b>Extra baggage</b><div style="font-size:11.5px;color:var(--muted);">+15kg checked-in — ₹800</div></div><div class="switch" id="addonBag"></div></div>' +
+          '<div class="addon-row"><div><b>In-flight meal upgrade</b><div style="font-size:11.5px;color:var(--muted);">Premium meal — ₹350</div></div><div class="switch" id="addonMeal"></div></div>' +
+          '<div class="addon-row"><div><b>Travel insurance</b><div style="font-size:11.5px;color:var(--muted);">Trip &amp; medical cover — ₹249</div></div><div class="switch" id="addonInsurance"></div></div>' +
+          '<div class="addon-row"><div><b>Make fare refundable</b><div style="font-size:11.5px;color:var(--muted);">Full refund anytime — ₹599</div></div><div class="switch" id="addonRefundable"></div></div></div>' +
+        '<div class="panel-solid"><div class="section-title"><span class="num" style="display:inline-flex;width:20px;height:20px;border-radius:50%;background:var(--grad-brand);align-items:center;justify-content:center;font-size:10.5px;margin-right:8px;">5</span>Contact &amp; payment</div>' +
+          '<div class="form-grid" style="margin-bottom:16px;"><div class="field-sm"><label>Contact email</label><input type="email" id="contactEmail" placeholder="you@example.com"></div><div class="field-sm"><label>Contact phone</label><input type="tel" id="contactPhone" placeholder="+91 98765 43210"></div></div>' +
+          '<div class="pay-tabs" id="payTabs">' +
+            '<div class="pay-tab active" data-pay="card">Card</div>' +
+            '<div class="pay-tab" data-pay="upi">UPI</div>' +
+            '<div class="pay-tab" data-pay="netbanking">Net Banking</div>' +
+          '</div>' +
+          '<div id="payFields"></div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="fare-summary">' +
+        '<div class="panel-solid">' +
+          '<div class="section-title">Fare summary</div>' +
+          '<div class="fare-line"><span>Base fare</span><span class="mono" id="sumBase">'+fmtINR(r.fare)+'</span></div>' +
+          '<div class="fare-line"><span>Class adjustment</span><span class="mono" id="sumClass">+'+fmtINR(0)+'</span></div>' +
+          '<div class="fare-line"><span>Seat fee</span><span class="mono" id="sumSeat">+'+fmtINR(0)+'</span></div>' +
+          '<div class="fare-line"><span>Add-ons</span><span class="mono" id="sumAddon">+'+fmtINR(0)+'</span></div>' +
+          '<div class="fare-line"><span>Taxes &amp; fees (12%)</span><span class="mono" id="sumTax">+'+fmtINR(r.fare*0.12)+'</span></div>' +
+          '<div class="fare-line"><span>Travellers</span><span class="mono">×'+paxN+'</span></div>' +
+          '<div class="fare-line" id="sumDiscountRow" style="display:none;"><span>Promo discount</span><span class="mono" id="sumDiscount" style="color:var(--success);">-₹0</span></div>' +
+          '<div class="promo-box"><input type="text" id="promoCode" placeholder="Promo code (try FIRST100)"><button class="btn btn-outline btn-sm" id="applyPromoBtn">Apply</button></div>' +
+          '<div class="total-row"><span>Total payable</span><span class="amt gold-text" id="sumTotal">'+fmtINR(r.fare*paxN)+'</span></div>' +
+          '<button class="btn btn-gold btn-full" id="confirmBookBtn" style="margin-top:16px;">Confirm booking</button>' +
+          '<p style="font-size:11px;color:var(--muted);text-align:center;margin-top:10px;">Demo booking on FareBoard — no real payment is processed.</p>' +
+        '</div>' +
+        '<div class="panel-solid" style="margin-top:16px;">' +
+          '<div class="section-title">Route &amp; fare history <span class="badge-pill">last 15 days</span></div>' +
+          '<div id="bookLineChart"></div>' +
+          '<table class="mini-table" id="bookHistTable"><thead><tr><th>Date</th><th>Fare</th><th>Trend</th></tr></thead><tbody></tbody></table>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+  // route & fare history for booking sidebar
+  var hist15 = generateDailyHistory(state.from, state.to, 15);
+  document.getElementById('bookLineChart').innerHTML = svgLineChart(hist15.map(function(h){return h.price;}), hist15.map(function(h){return fmtShortDate(h.date);}), {height:130});
+  var bhBody = document.querySelector('#bookHistTable tbody');
+  bhBody.innerHTML = hist15.slice(-6).reverse().map(function(h,i,arr){
+    var prev = arr[i+1];
+    var up = prev ? h.price>prev.price : false;
+    return '<tr><td>'+fmtShortDate(h.date)+'</td><td class="mono">'+fmtINR(h.price)+'</td><td class="'+(up?'chg-up':'chg-down')+'">'+(up?'▲ Rising':'▼ Falling')+'</td></tr>';
+  }).join('');
+
+  // class select
+  document.querySelectorAll('.class-opt').forEach(function(el){
+    if (el.dataset.cls==='Economy') el.classList.add('selected');
+    el.addEventListener('click', function(){
+      document.querySelectorAll('.class-opt').forEach(function(x){x.classList.remove('selected');});
+      el.classList.add('selected'); bookState.cls = el.dataset.cls; updateFareSummary();
+    });
+  });
+  // seats
+  document.querySelectorAll('.seat').forEach(function(seatEl){
+    seatEl.addEventListener('click', function(){
+      if (seatEl.classList.contains('occ')) return;
+      var id = seatEl.dataset.seat;
+      var idx = bookState.seats.indexOf(id);
+      if (idx>=0){ bookState.seats.splice(idx,1); seatEl.classList.remove('sel'); }
+      else{
+        if (bookState.seats.length >= paxN){ showToast('You can only select '+paxN+' seat(s)'); return; }
+        bookState.seats.push(id); seatEl.classList.add('sel');
+      }
+      updateFareSummary();
+    });
+  });
+  // addons
+  ['Bag','Meal','Insurance','Refundable'].forEach(function(key){
+    var el = document.getElementById('addon'+key);
+    el.addEventListener('click', function(){
+      var map = {Bag:'baggage', Meal:'meal', Insurance:'insurance', Refundable:'refundable'};
+      var k = map[key];
+      bookState[k] = !bookState[k];
+      el.classList.toggle('on', bookState[k]);
+      updateFareSummary();
+    });
+  });
+  // pay tabs
+  document.getElementById('payTabs').addEventListener('click', function(e){
+    var t = e.target.closest('.pay-tab'); if(!t) return;
+    document.querySelectorAll('.pay-tab').forEach(function(x){x.classList.remove('active');});
+    t.classList.add('active'); bookState.payTab = t.dataset.pay; renderPayFields();
+  });
+  renderPayFields();
+  document.getElementById('applyPromoBtn').addEventListener('click', applyPromo);
+  document.getElementById('confirmBookBtn').addEventListener('click', confirmBooking);
+  updateFareSummary();
+}
+
+function renderPayFields(){
+  var el = document.getElementById('payFields');
+  if (bookState.payTab==='card'){
+    el.innerHTML = '<div class="form-grid"><div class="field-sm full"><label>Card number</label><input type="text" placeholder="1234 5678 9012 3456"></div><div class="field-sm"><label>Expiry</label><input type="text" placeholder="MM/YY"></div><div class="field-sm"><label>CVV</label><input type="text" placeholder="123"></div></div>';
+  } else if (bookState.payTab==='upi'){
+    el.innerHTML = '<div class="field-sm full"><label>UPI ID</label><input type="text" placeholder="yourname@upi"></div>';
+  } else {
+    el.innerHTML = '<div class="field-sm full"><label>Select bank</label><select><option>State Bank of India</option><option>HDFC Bank</option><option>ICICI Bank</option><option>Axis Bank</option><option>Punjab National Bank</option></select></div>';
+  }
+}
+
+function applyPromo(){
+  var code = document.getElementById('promoCode').value.trim().toUpperCase();
+  if (code === 'FIRST100'){ bookState.promo = 100; showToast('Promo applied — ₹100 off!'); }
+  else if (!code){ bookState.promo = 0; }
+  else { bookState.promo = 0; showToast('Invalid promo code'); }
+  updateFareSummary();
+}
+
+function updateFareSummary(){
+  var r = state.selectedFlight; if (!r) return;
+  var paxN = +state.pax;
+  var classAdj = r.fare * (CLASS_MULT[bookState.cls]-1);
+  var seatFee = bookState.seats.filter(function(s){return +s.slice(0,-1)<=2;}).length * 300;
+  var addonCost = (bookState.baggage?800:0)+(bookState.meal?350:0)+(bookState.insurance?249:0)+(bookState.refundable?599:0);
+  var subtotal = (r.fare+classAdj) * paxN + seatFee + addonCost;
+  var tax = subtotal * 0.12;
+  var discount = bookState.promo || 0;
+  var total = Math.max(0, subtotal + tax - discount);
+  document.getElementById('sumClass').textContent = '+'+fmtINR(classAdj*paxN);
+  document.getElementById('sumSeat').textContent = '+'+fmtINR(seatFee);
+  document.getElementById('sumAddon').textContent = '+'+fmtINR(addonCost);
+  document.getElementById('sumTax').textContent = '+'+fmtINR(tax);
+  if (discount>0){ document.getElementById('sumDiscountRow').style.display='flex'; document.getElementById('sumDiscount').textContent = '-'+fmtINR(discount); }
+  else{ document.getElementById('sumDiscountRow').style.display='none'; }
+  document.getElementById('sumTotal').textContent = fmtINR(total);
+}
+
+function confirmBooking(){
+  var r = state.selectedFlight; var paxN = +state.pax;
+  var classAdj = r.fare*(CLASS_MULT[bookState.cls]-1);
+  var seatFee = bookState.seats.filter(function(s){return +s.slice(0,-1)<=2;}).length*300;
+  var addonCost = (bookState.baggage?800:0)+(bookState.meal?350:0)+(bookState.insurance?249:0)+(bookState.refundable?599:0);
+  var subtotal = (r.fare+classAdj)*paxN + seatFee + addonCost;
+  var total = Math.max(0, subtotal*1.12 - (bookState.promo||0));
+  var depDateObj = state.date ? new Date(state.date+"T00:00:00") : new Date(Date.now()+86400000*20);
+  var booking = {
+    id:'FB'+Date.now().toString().slice(-8), from:state.from, to:state.to,
+    date: state.date || depDateObj.toISOString().slice(0,10),
+    airline:r.airline, provider:r.provider.name, airlineColor:r.airlineColor,
+    cls:bookState.cls, seats:bookState.seats.slice(), fare:Math.round(total), status:'Confirmed',
+    flightNo:r.flightNo, depHour:r.depHour
+  };
+  state.bookings.unshift(booking);
+  renderHistory();
+  showToast('Booking confirmed — '+booking.id);
+  setView('history');
+}
+
+/* ================= History ================= */
+var historySeg = 'all', historySearchTerm = '';
+document.getElementById('historySeg').addEventListener('click', function(e){
+  var b = e.target.closest('button'); if(!b) return;
+  document.querySelectorAll('#historySeg button').forEach(function(x){x.classList.remove('active');});
+  b.classList.add('active'); historySeg = b.dataset.seg; renderHistory();
+});
+document.getElementById('historySearch').addEventListener('input', function(){ historySearchTerm = this.value.toLowerCase(); renderHistory(); });
+
+function bookingStatusCategory(b){
+  if (b.status==='Cancelled') return 'cancelled';
+  var d = new Date(b.date+"T00:00:00");
+  return d >= new Date(new Date().toDateString()) ? 'upcoming' : 'completed';
+}
+function renderHistoryStats(){
+  var total = state.bookings.length;
+  var spent = state.bookings.filter(function(b){return b.status!=='Cancelled';}).reduce(function(s,b){return s+b.fare;},0);
+  var upcoming = state.bookings.filter(function(b){return bookingStatusCategory(b)==='upcoming';}).length;
+  var cancelled = state.bookings.filter(function(b){return b.status==='Cancelled';}).length;
+  var stats = [
+    {label:'Total bookings', val:total, icon:'ticket', bg:'var(--grad-brand)'},
+    {label:'Total spent', val:fmtINR(spent), icon:'wallet', bg:'var(--grad-gold)'},
+    {label:'Upcoming trips', val:upcoming, icon:'plane', bg:'linear-gradient(135deg,#22D3EE,#34D399)'},
+    {label:'Cancelled', val:cancelled, icon:'x', bg:'linear-gradient(135deg,#FB7185,#F472B6)'}
+  ];
+  document.getElementById('historyStats').innerHTML = stats.map(function(s){
+    return '<div class="stat-card"><div class="ic" style="background:'+s.bg+';">'+ic(s.icon)+'</div><b>'+s.val+'</b><span>'+s.label+'</span></div>';
+  }).join('');
+}
+function renderHistory(){
+  renderHistoryStats();
+  var body = document.getElementById('historyBody');
+  var empty = document.getElementById('historyEmpty');
+  var rows = state.bookings.filter(function(b){
+    if (historySeg!=='all' && bookingStatusCategory(b)!==historySeg) return false;
+    if (historySearchTerm && (b.id+b.from+b.to).toLowerCase().indexOf(historySearchTerm)<0) return false;
+    return true;
+  });
+  body.innerHTML = '';
+  if (!rows.length){ empty.style.display='block'; return; }
+  empty.style.display = 'none';
+  rows.forEach(function(b,i){
+    var cat = bookingStatusCategory(b);
+    var statusClass = b.status==='Cancelled' ? 'cancelled' : (cat==='completed' ? 'completed' : 'confirmed');
+    var statusLabel = b.status==='Cancelled' ? 'Cancelled' : (cat==='completed' ? 'Completed' : 'Confirmed');
+    var tr = document.createElement('tr'); tr.className = 'hrow';
+    tr.innerHTML =
+      '<td class="mono">'+b.id+'</td>' +
+      '<td>'+b.from+' → '+b.to+'</td>' +
+      '<td><span class="mini-air" style="background:'+(b.airlineColor||'#7C5CFC')+';">'+b.airline.slice(0,2).toUpperCase()+'</span>'+b.airline+'</td>' +
+      '<td>'+b.cls+'</td>' +
+      '<td class="mono">'+(b.seats&&b.seats.length?b.seats.join(', '):'—')+'</td>' +
+      '<td>'+b.date+'</td>' +
+      '<td class="mono">'+fmtINR(b.fare)+'</td>' +
+      '<td><span class="status '+statusClass+'">'+statusLabel+'</span></td>' +
+      '<td style="display:flex;gap:6px;">' +
+        '<button class="btn btn-ghost btn-sm" data-detail="'+i+'">Details</button>' +
+        (b.status==='Confirmed' ? '<button class="btn btn-outline btn-sm" data-cancel="'+state.bookings.indexOf(b)+'">Cancel</button>' : '') +
+      '</td>';
+    body.appendChild(tr);
+  });
+  body.querySelectorAll('[data-cancel]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      state.bookings[+btn.dataset.cancel].status = 'Cancelled';
+      renderHistory(); showToast('Booking cancelled');
+    });
+  });
+  body.querySelectorAll('[data-detail]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var b = rows[+btn.dataset.detail];
+      document.getElementById('detailContent').innerHTML =
+        '<div class="rule-row"><span>Booking ID</span><span>'+b.id+'</span></div>' +
+        '<div class="rule-row"><span>Route</span><span>'+b.from+' → '+b.to+'</span></div>' +
+        '<div class="rule-row"><span>Flight</span><span>'+b.airline+' '+(b.flightNo||'')+'</span></div>' +
+        '<div class="rule-row"><span>Class</span><span>'+b.cls+'</span></div>' +
+        '<div class="rule-row"><span>Seats</span><span>'+(b.seats&&b.seats.length?b.seats.join(', '):'Not selected')+'</span></div>' +
+        '<div class="rule-row"><span>Departure date</span><span>'+b.date+'</span></div>' +
+        '<div class="rule-row"><span>Booked via</span><span>'+b.provider+'</span></div>' +
+        '<div class="rule-row"><span>Total fare</span><span>'+fmtINR(b.fare)+'</span></div>' +
+        '<div class="rule-row"><span>Status</span><span>'+b.status+'</span></div>';
+      document.getElementById('detailOverlay').classList.add('show');
+    });
+  });
+}
+
+/* ================= Analytics ================= */
+document.getElementById('dayRangeToggle').addEventListener('click', function(e){
+  var b = e.target.closest('button'); if(!b) return;
+  document.querySelectorAll('#dayRangeToggle button').forEach(function(x){x.classList.remove('active');});
+  b.classList.add('active'); state.analyticsDays = +b.dataset.days;
+  document.getElementById('dayRangeBadge').textContent = state.analyticsDays+' days';
+  renderAnalytics();
+});
+function renderAnalytics(){
+  document.getElementById('analyticsRoute').textContent = state.from+' → '+state.to;
+  var base = baseFareFor(state.from, state.to);
+  var points = [60,45,30,21,14,7,3,1];
+  var bars = document.getElementById('leadBars'); bars.innerHTML = '';
+  var values = points.map(function(d){return Math.round(base*leadTimeMultiplier(d)/10)*10;});
+  var max = Math.max.apply(null, values), min = Math.min.apply(null, values);
+  points.forEach(function(d,i){
+    var v = values[i]; var h = 30+(v/max)*160;
+    var col = document.createElement('div'); col.className='bar-col';
+    col.innerHTML = '<div class="bar'+(v===min?' cheapest':'')+'" style="height:'+h+'px;"><span class="bar-val">'+fmtINR(v)+'</span></div><div class="bar-label">'+d+'d</div>';
+    bars.appendChild(col);
+  });
+  var bestDay = points[values.indexOf(min)];
+  document.getElementById('insightStrip').innerHTML =
+    '<div class="insight"><b>Best time to book</b><span>~'+bestDay+' days before departure, around '+fmtINR(min)+'</span></div>' +
+    '<div class="insight"><b>Last-minute premium</b><span>Booking 1 day out costs ~'+Math.round(((values[values.length-1]/min)-1)*100)+'% more</span></div>' +
+    '<div class="insight" style="border-color:var(--gold);"><b>Fare spread</b><span>'+fmtINR(min)+' – '+fmtINR(max)+' across the booking window</span></div>';
+
+  var hist = generateDailyHistory(state.from, state.to, state.analyticsDays);
+  var vals = hist.map(function(h){return h.price;});
+  var labels = hist.map(function(h){return fmtShortDate(h.date);});
+  document.getElementById('dailyLineChart').innerHTML = svgLineChart(vals, labels, {height:220});
+  var body = document.querySelector('#dailyTable tbody'); body.innerHTML = '';
+  hist.forEach(function(h,i){
+    var prev = hist[i-1];
+    var change = prev ? h.price-prev.price : 0;
+    body.innerHTML += '<tr><td>'+(i+1)+'</td><td>'+fmtDow(h.date)+' '+fmtShortDate(h.date)+'</td><td class="mono">'+fmtINR(h.price)+'</td>' +
+      '<td class="'+(change>=0?'chg-up':'chg-down')+'">'+(i===0?'—':(change>=0?'▲ +':'▼ ')+fmtINR(Math.abs(change)))+'</td>' +
+      '<td>'+(change>0?'Rising':change<0?'Falling':'Stable')+'</td></tr>';
+  });
+}
+
+/* ================= Routes ================= */
+var routeViewMode = 'card';
+var ROUTE_PAIRS = [
+  ["DEL","BOM"],["DEL","BLR"],["BOM","BLR"],["DEL","MAA"],["BOM","GOI"],
+  ["DEL","CCU"],["BLR","HYD"],["DEL","HYD"],["BOM","COK"],["DEL","JAI"],
+  ["MAA","CCU"],["BLR","GOI"],["DEL","PAT"],["BOM","AMD"],["DEL","IXC"],
+  ["BLR","MAA"],["DEL","VNS"],["BOM","IDR"]
+];
+function computeRouteData(p){
+  var base = baseFareFor(p[0],p[1]);
+  var low = Math.round(base*0.86/10)*10;
+  var high = Math.round(base*1.6/10)*10;
+  var avg = Math.round((low+high)/2/10)*10;
+  var up = seededRand(p.join('')+'trend')>0.5;
+  var pop = Math.round(seededRand(p.join('')+'pop')*4000+500);
+  return {p:p, low:low, high:high, avg:avg, up:up, pop:pop};
+}
+function renderRoutes(){
+  var term = (document.getElementById('routeSearch').value||'').toLowerCase();
+  var sortMode = document.getElementById('routeSort').value;
+  var data = ROUTE_PAIRS.map(computeRouteData).filter(function(r){
+    return !term || cityName(r.p[0]).toLowerCase().indexOf(term)>=0 || cityName(r.p[1]).toLowerCase().indexOf(term)>=0 || r.p[0].toLowerCase().indexOf(term)>=0 || r.p[1].toLowerCase().indexOf(term)>=0;
+  });
+  data.sort(function(a,b){
+    if (sortMode==='low') return a.low-b.low;
+    if (sortMode==='high') return b.high-a.high;
+    return b.pop-a.pop;
+  });
+  var grid = document.getElementById('routeGrid'); grid.innerHTML = '';
+  var colors = ["linear-gradient(135deg,#8B5CF6,#22D3EE)","linear-gradient(135deg,#F472B6,#8B5CF6)","linear-gradient(135deg,#22D3EE,#34D399)","linear-gradient(135deg,#FBBF24,#F472B6)"];
+  data.forEach(function(r,i){
+    var card = document.createElement('div'); card.className='route-card';
+    card.innerHTML = '<div class="route-ic" style="background:'+colors[i%colors.length]+';">'+ic('plane')+'</div>' +
+      '<div class="pair">'+r.p[0]+' — '+r.p[1]+'</div>' +
+      '<div class="range">'+fmtINR(r.low)+' – '+fmtINR(r.high)+'</div>' +
+      '<div class="tip">Typical economy fare band · '+r.pop+' searches/mo</div>' +
+      '<div class="trend '+(r.up?'up':'down')+'">'+(r.up?'▲ Fares trending up':'▼ Fares trending down')+'</div>';
+    card.addEventListener('click', function(){
+      document.getElementById('fromCity').value = cityName(r.p[0])+' ('+r.p[0]+')'; document.getElementById('fromCity').dataset.code = r.p[0];
+      document.getElementById('toCity').value = cityName(r.p[1])+' ('+r.p[1]+')'; document.getElementById('toCity').dataset.code = r.p[1];
+      runSearch();
+    });
+    grid.appendChild(card);
+  });
+  var tbody = document.getElementById('routeTableBody'); tbody.innerHTML = '';
+  data.forEach(function(r){
+    tbody.innerHTML += '<tr class="hrow"><td>'+r.p[0]+' — '+r.p[1]+'</td><td class="mono">'+fmtINR(r.low)+'</td><td class="mono">'+fmtINR(r.high)+'</td><td class="mono">'+fmtINR(r.avg)+'</td>' +
+      '<td><span class="trend '+(r.up?'up':'down')+'" style="margin-top:0;">'+(r.up?'▲ Up':'▼ Down')+'</span></td>' +
+      '<td><button class="btn btn-ghost btn-sm" data-route="'+r.p[0]+','+r.p[1]+'">Compare</button></td></tr>';
+  });
+  tbody.querySelectorAll('[data-route]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var parts = btn.dataset.route.split(',');
+      document.getElementById('fromCity').value = cityName(parts[0])+' ('+parts[0]+')'; document.getElementById('fromCity').dataset.code = parts[0];
+      document.getElementById('toCity').value = cityName(parts[1])+' ('+parts[1]+')'; document.getElementById('toCity').dataset.code = parts[1];
+      runSearch();
+    });
+  });
+
+  var allData = ROUTE_PAIRS.map(computeRouteData);
+  var cheapest = allData.reduce(function(a,b){return a.low<b.low?a:b;});
+  var priciest = allData.reduce(function(a,b){return a.high>b.high?a:b;});
+  var trending = allData.reduce(function(a,b){return a.pop>b.pop?a:b;});
+  document.getElementById('routeStats').innerHTML = [
+    {label:'Routes tracked', val:ROUTE_PAIRS.length, icon:'map', bg:'var(--grad-brand)'},
+    {label:'Cheapest route now', val:cheapest.p[0]+'-'+cheapest.p[1]+' · '+fmtINR(cheapest.low), icon:'tag', bg:'var(--grad-gold)'},
+    {label:'Priciest route now', val:priciest.p[0]+'-'+priciest.p[1]+' · '+fmtINR(priciest.high), icon:'bolt', bg:'linear-gradient(135deg,#FB7185,#F472B6)'},
+    {label:'Most searched', val:trending.p[0]+'-'+trending.p[1], icon:'users', bg:'linear-gradient(135deg,#22D3EE,#34D399)'}
+  ].map(function(s){ return '<div class="stat-card"><div class="ic" style="background:'+s.bg+';">'+ic(s.icon)+'</div><b style="font-size:15px;">'+s.val+'</b><span>'+s.label+'</span></div>'; }).join('');
+}
+document.getElementById('routeSearch').addEventListener('input', renderRoutes);
+document.getElementById('routeSort').addEventListener('change', renderRoutes);
+document.querySelectorAll('[data-view-mode]').forEach(function(chip){
+  chip.addEventListener('click', function(){
+    document.querySelectorAll('[data-view-mode]').forEach(function(c){c.classList.remove('active');});
+    chip.classList.add('active'); routeViewMode = chip.dataset.viewMode;
+    document.getElementById('routeGrid').style.display = routeViewMode==='card' ? 'grid':'none';
+    document.getElementById('routeTable').style.display = routeViewMode==='table' ? 'table':'none';
+  });
+});
+
+/* ================= Init ================= */
+function init(){
+  setupCityField('fromCity','fromList','DEL');
+  setupCityField('toCity','toList','BOM');
+  var d = new Date(); d.setDate(d.getDate()+30);
+  document.getElementById('depDate').value = d.toISOString().slice(0,10);
+  document.getElementById('depDate').min = new Date().toISOString().slice(0,10);
+  var rd = new Date(); rd.setDate(rd.getDate()+37);
+  document.getElementById('retDate').value = rd.toISOString().slice(0,10);
+
+  typeGreeting();
+  renderTrending();
+  renderFeatures();
+  renderMarquee();
+  renderTestimonials();
+  renderFaq();
+  renderHistory();
+  renderRoutes();
+
+  state.results = generateResults(state.from, state.to, document.getElementById('depDate').value);
+  setupFiltersForResults();
+  renderAnalytics();
+}
+init();
+})();
+</script>
+</body>
+</html>
